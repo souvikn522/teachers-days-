@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Note Wall | By All Students</title>
+  <title>Note Wall | The Thank-You Desk</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
-  
   <script>
     tailwind.config = {
       theme: {
@@ -19,212 +18,226 @@
   </script>
 </head>
 <body class="bg-[#F7F4EA] text-[#2D5A4C] font-sans antialiased min-h-screen">
-  <div class="flex flex-col items-center px-4 py-8 md:py-16 max-w-3xl mx-auto">
+  <div class="flex flex-col items-center px-4 md:px-8 py-6 max-w-4xl mx-auto">
     
-    <!-- Navbar -->
-    <header class="w-full flex justify-between items-center border-b border-[#2D5A4C]/10 pb-6 mb-12">
-      <div class="flex items-center space-x-3">
-        <div class="w-8 h-8 rounded bg-[#2D5A4C] text-[#F7F4EA] flex items-center justify-center font-serif font-bold text-lg">📖</div>
-        <a href="index.html" class="font-semibold text-lg tracking-tight">The Thank-You Desk</a>
+    <!-- Professional Navigation Bar -->
+    <header class="w-full border-b border-[#2D5A4C]/15 pb-4 mb-10">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="flex items-center space-x-3 group">
+          <div class="w-9 h-9 rounded-lg bg-[#2D5A4C] text-[#F7F4EA] flex items-center justify-center font-serif font-bold text-lg shadow-sm">📖</div>
+          <span class="font-serif font-bold text-xl md:text-2xl tracking-tight text-[#2D5A4C]">The Thank-You Desk</span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold uppercase tracking-widest">
+          <a href="index.html" class="hover:text-[#D95338] transition">Home</a>
+          <a href="lessons.html" class="hover:text-[#D95338] transition">Lessons</a>
+          <a href="gallery.html" class="hover:text-[#D95338] transition">Gallery</a>
+          <a href="wall.html" class="bg-[#D95338] text-white px-4 py-2 rounded-xl shadow hover:bg-[#D95338]/90 transition">Note Wall</a>
+        </nav>
+
+        <!-- Mobile Hamburger Button -->
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-[#2D5A4C] focus:outline-none" aria-label="Toggle Menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+        </button>
       </div>
-      <nav class="flex space-x-4 md:space-x-6 text-xs uppercase tracking-widest font-semibold">
-        <a href="index.html" class="hover:text-[#D95338] transition">Home</a>
-        <a href="lessons.html" class="hover:text-[#D95338] transition">Lessons</a>
-        <a href="gallery.html" class="hover:text-[#D95338] transition">Gallery</a>
-        <a href="wall.html" class="bg-[#D95338] text-white px-3 py-1.5 rounded-lg">Note Wall</a>
+
+      <!-- Mobile Navigation Drawer -->
+      <nav id="mobile-menu" class="hidden md:hidden flex-col space-y-3 pt-4 pb-2 text-xs font-semibold uppercase tracking-widest border-t border-[#2D5A4C]/10 mt-4">
+        <a href="index.html" class="py-1 hover:text-[#D95338]">Home</a>
+        <a href="lessons.html" class="py-1 hover:text-[#D95338]">Lessons</a>
+        <a href="gallery.html" class="py-1 hover:text-[#D95338]">Gallery</a>
+        <a href="wall.html" class="bg-[#D95338] text-white px-4 py-2 rounded-xl text-center">Note Wall</a>
       </nav>
     </header>
 
-    <!-- SECTION 1:Sir Dialogues (Only changes when button is pressed) -->
-    <section class="w-full mb-16">
-      <div class="relative bg-white border border-[#2D5A4C]/10 rounded-2xl p-8 md:p-12 shadow-xl min-h-[240px] flex flex-col justify-between">
-        <div class="flex justify-between items-center text-xs tracking-widest text-[#2D5A4C]/40 uppercase mb-6">
+    <!-- SECTION 1: Pre-written Sir Dialogues -->
+    <section class="w-full mb-12">
+      <div class="relative bg-white border border-[#2D5A4C]/10 rounded-2xl p-6 md:p-10 shadow-lg min-h-[220px] flex flex-col justify-between">
+        <div class="flex justify-between items-center text-[11px] tracking-widest text-[#2D5A4C]/50 uppercase font-semibold mb-4">
           <span>Famous Sir Dialogues</span>
           <span id="quote-number">DIALOGUE NO. 01</span>
         </div>
         <div>
-          <blockquote id="quote-text" class="font-serif text-2xl md:text-3xl text-[#2D5A4C] leading-snug mb-4">
-            "Get Lost."
+          <blockquote id="quote-text" class="font-serif text-xl md:text-3xl text-[#2D5A4C] leading-snug mb-3">
+            "Silence in the class! The backbenchers are doing physics experiments with pens again."
           </blockquote>
-          <p id="quote-author" class="italic text-[#D95338] font-serif">— Susanta Sir</p>
+          <p id="quote-author" class="italic text-[#D95338] font-serif font-medium">— Physics Sir</p>
         </div>
-        <div class="mt-6 pt-4 border-t border-[#2D5A4C]/5 flex justify-end">
-          <button type="button" onclick="nextDialogue()" class="text-xs uppercase tracking-wider font-semibold border border-[#2D5A4C]/20 rounded-lg px-4 py-2 hover:bg-[#2D5A4C] hover:text-[#F7F4EA] transition">
+        <div class="mt-6 pt-4 border-t border-[#2D5A4C]/10 flex justify-end">
+          <button type="button" onclick="nextDialogue()" class="text-xs uppercase tracking-wider font-semibold border border-[#2D5A4C]/20 rounded-xl px-5 py-2.5 hover:bg-[#2D5A4C] hover:text-[#F7F4EA] transition shadow-sm">
             🔄 Another Dialogue
           </button>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 2: Form for Visitors to Submit Their Own Notes -->
-    <section class="w-full bg-[#2D5A4C] text-[#F7F4EA] rounded-3xl p-8 md:p-12 mb-16 shadow-2xl">
-      <span class="text-xs uppercase tracking-widest text-[#E9C46A] font-semibold mb-2 block">02 / Your Turn</span>
-      <h2 class="font-serif text-3xl md:text-5xl mb-4">Put one true thing on the desk.</h2>
+    <!-- SECTION 2: High Contrast Note Form -->
+    <section class="w-full bg-[#2D5A4C] text-[#F7F4EA] rounded-3xl p-6 md:p-10 mb-16 shadow-xl">
+      <span class="text-xs uppercase tracking-widest text-[#E9C46A] font-semibold mb-2 block">02 / Leave a Note</span>
+      <h2 class="font-serif text-2xl md:text-4xl mb-6">Put one true thing on the desk.</h2>
       <form id="note-form" onsubmit="addNote(event)" class="space-y-4">
-        <input type="text" id="author-input" placeholder="Your name (optional)" class="w-full bg-[#F7F4EA]/10 border border-[#F7F4EA]/20 rounded-xl px-4 py-3 text-[#F7F4EA] placeholder-[#F7F4EA]/40 focus:outline-none focus:border-[#E9C46A]" />
-        <textarea rows="3" id="message-input" placeholder="I remember when..." class="w-full bg-[#F7F4EA]/10 border border-[#F7F4EA]/20 rounded-xl px-4 py-3 text-[#F7F4EA] placeholder-[#F7F4EA]/40 focus:outline-none focus:border-[#E9C46A]" required></textarea>
-        <button type="submit" id="submit-btn" class="bg-[#D95338] text-white font-semibold text-xs tracking-widest uppercase px-6 py-4 rounded-xl hover:bg-[#D95338]/90 transition shadow-md">
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-[#F7F4EA]/80 mb-1 font-medium">Your Name (Optional)</label>
+          <input type="text" id="author-input" placeholder="e.g. Rahul Sharma" class="w-full bg-[#F7F4EA]/15 border border-[#F7F4EA]/40 rounded-xl px-4 py-3 text-[#F7F4EA] placeholder-[#F7F4EA]/70 focus:outline-none focus:ring-2 focus:ring-[#E9C46A] text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-[#F7F4EA]/80 mb-1 font-medium">Your Memory or Message *</label>
+          <textarea rows="3" id="message-input" placeholder="I remember when..." class="w-full bg-[#F7F4EA]/15 border border-[#F7F4EA]/40 rounded-xl px-4 py-3 text-[#F7F4EA] placeholder-[#F7F4EA]/70 focus:outline-none focus:ring-2 focus:ring-[#E9C46A] text-sm" required></textarea>
+        </div>
+        <button type="submit" id="submit-btn" class="bg-[#D95338] text-white font-semibold text-xs tracking-widest uppercase px-6 py-3.5 rounded-xl hover:bg-[#D95338]/90 transition shadow-md w-full md:w-auto">
           📌 Pin Note
         </button>
       </form>
     </section>
 
-    <!-- SECTION 3: Live Community Wall Grid (Shows visitor comments from Firebase) -->
+    <!-- SECTION 3: Live Community Wall Grid -->
     <section class="w-full mb-16">
-      <div class="flex justify-between items-center mb-6">
+      <div class="flex justify-between items-center mb-8 border-b border-[#2D5A4C]/10 pb-4">
         <div>
           <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold block mb-1">03 / The Note Wall</span>
-          <h2 class="font-serif text-3xl md:text-4xl">The small things become the big things.</h2>
+          <h2 class="font-serif text-2xl md:text-3xl font-bold">The small things become the big things.</h2>
         </div>
-        <button onclick="toggleAdmin()" class="text-[10px] uppercase tracking-widest opacity-40 hover:opacity-100">🔒 Admin</button>
+        <button onclick="toggleAdmin()" class="text-[10px] uppercase tracking-widest bg-[#2D5A4C]/10 px-3 py-1.5 rounded-lg hover:bg-[#2D5A4C] hover:text-white transition font-semibold">🔒 Admin</button>
       </div>
       
-      <div id="wall-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Visitor notes load here from Firebase -->
+      <div id="wall-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- Notes rendered here -->
       </div>
     </section>
 
-    <footer class="text-center border-t border-[#2D5A4C]/10 pt-8 w-full text-xs text-[#2D5A4C]/50">
-      <p>Thank You - An Open Note From All Students.</p>
-      <p>Built by Souvik Nandi, Wh-7699548610, souvikn522@gmail.com</p>
-      <p>For more details, contact the Owner</p>
+    <footer class="text-center border-t border-[#2D5A4C]/10 pt-8 w-full text-xs text-[#2D5A4C]/60 tracking-wider">
+      <p>THE THANK-YOU DESK · AN OPEN NOTE</p>
     </footer>
   </div>
-<script>
-  // JSONBin Credentials
-  const BIN_ID = "6a96b0c9f5f4af5e295c0658" ;
-  const MASTER_KEY = "$2a$10$3bxhzMyIwoZoitZ8QhXn9uO3CfqlluwtQle4bIl8SP/ofAp9xbV8a";
-  const ADMIN_PIN = "1234"; 
-  let isAdmin = false;
 
-  // Sir Dialogues
-  const customDialogues = [
-    { dialogue: "Get Lost.", teacher: "— Susanta Sir", no: "01" },
-    { dialogue: "Kar ki ese gelo tate amar 108 bar.", teacher: "— Susanta Sir", no: "02" },
-    { dialogue: "", teacher: "— Susanta Sir", no: "03" }
-  ];
-  let currentDialogueIndex = 0;
+  <script>
+    const BIN_ID = "6a96b10ef5f4af5e295c07d4"; // Insert your Notes Bin ID
+    const MASTER_KEY = "$2a$10$3bxhzMyIwoZoitZ8QhXn9uO3CfqlluwtQle4bIl8SP/ofAp9xbV8a"; // Insert Master Key
+    const ADMIN_PIN = "1234"; 
+    let isAdmin = false;
 
-  function nextDialogue() {
-    currentDialogueIndex = (currentDialogueIndex + 1) % customDialogues.length;
-    document.getElementById('quote-text').innerText = `"${customDialogues[currentDialogueIndex].dialogue}"`;
-    document.getElementById('quote-author').innerText = customDialogues[currentDialogueIndex].teacher;
-    document.getElementById('quote-number').innerText = `DIALOGUE NO. ${customDialogues[currentDialogueIndex].no}`;
-  }
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+      menu.classList.toggle('flex');
+    }
 
-  // Fetch submitted notes on load
-  async function loadNotes() {
-    try {
-      const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { "X-Master-Key": MASTER_KEY }
-      });
-      const data = await res.json();
-      const notes = data.record || [];
-      
+    const customDialogues = [
+      { dialogue: "Silence in the class! The backbenchers are doing physics experiments with pens again.", teacher: "— Physics Sir", no: "01" },
+      { dialogue: "Is this a classroom or a vegetable market? I can hear you from the staff room!", teacher: "— Math Sir", no: "02" },
+      { dialogue: "Why are you looking outside the window? Am I teaching on the tree?", teacher: "— Chemistry Sir", no: "03" },
+      { dialogue: "Turn to page 42 and read silently. No talking till the bell rings.", teacher: "— English Sir", no: "04" }
+    ];
+    let currentDialogueIndex = 0;
+
+    function nextDialogue() {
+      currentDialogueIndex = (currentDialogueIndex + 1) % customDialogues.length;
+      document.getElementById('quote-text').innerText = `"${customDialogues[currentDialogueIndex].dialogue}"`;
+      document.getElementById('quote-author').innerText = customDialogues[currentDialogueIndex].teacher;
+      document.getElementById('quote-number').innerText = `DIALOGUE NO. ${customDialogues[currentDialogueIndex].no}`;
+    }
+
+    async function loadNotes() {
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+          headers: { "X-Master-Key": MASTER_KEY }
+        });
+        const data = await res.json();
+        const notes = Array.isArray(data.record) ? data.record : [];
+        const grid = document.getElementById('wall-grid');
+        grid.innerHTML = "";
+        notes.forEach((item, index) => renderCard(index, item.message, item.author, item.bgClass));
+      } catch (e) {
+        console.error("Error loading notes:", e);
+      }
+    }
+
+    async function addNote(event) {
+      event.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.innerText = "PINNING...";
+
+      const message = document.getElementById('message-input').value.trim();
+      const author = document.getElementById('author-input').value.trim() || "ANONYMOUS STUDENT";
+      const bgClasses = ["bg-white text-[#2D5A4C]", "bg-[#E9C46A] text-[#2D5A4C]", "bg-[#2D5A4C] text-[#F7F4EA]", "bg-[#D95338] text-white"];
+      const randomBg = bgClasses[Math.floor(Math.random() * bgClasses.length)];
+
+      try {
+        const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+          headers: { "X-Master-Key": MASTER_KEY }
+        });
+        const getData = await getRes.json();
+        let currentNotes = Array.isArray(getData.record) ? getData.record : [];
+        currentNotes.unshift({ message, author, bgClass: randomBg });
+
+        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Master-Key": MASTER_KEY,
+            "X-Bin-Versioning": "false"
+          },
+          body: JSON.stringify(currentNotes)
+        });
+
+        document.getElementById('note-form').reset();
+        await loadNotes();
+      } catch (e) {
+        alert("Error saving note.");
+      }
+      btn.disabled = false;
+      btn.innerText = "📌 PIN NOTE";
+    }
+
+    function renderCard(index, message, author, bgClass) {
       const grid = document.getElementById('wall-grid');
-      grid.innerHTML = "";
-      notes.forEach((item, index) => {
-        renderCard(index, item.message, item.author, item.bgClass);
-      });
-    } catch (e) {
-      console.error("Error loading notes:", e);
-    }
-  }
-
-  // Save new student note
-  async function addNote(event) {
-    event.preventDefault();
-    const btn = document.getElementById('submit-btn');
-    btn.disabled = true;
-    btn.innerText = "PINNING...";
-
-    const message = document.getElementById('message-input').value;
-    const author = document.getElementById('author-input').value || "ANONYMOUS STUDENT";
-    const bgClasses = ["bg-white text-[#2D5A4C]", "bg-[#E9C46A] text-[#2D5A4C]", "bg-[#2D5A4C] text-[#F7F4EA]", "bg-[#D95338] text-white"];
-    const randomBg = bgClasses[Math.floor(Math.random() * bgClasses.length)];
-
-    try {
-      // Get current array
-      const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { "X-Master-Key": MASTER_KEY }
-      });
-      const getData = await getRes.json();
-      let currentNotes = getData.record || [];
-
-      // Add new note to front
-      currentNotes.unshift({ message, author, bgClass: randomBg });
-
-      // Save updated array
-      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Master-Key": MASTER_KEY
-        },
-        body: JSON.stringify(currentNotes)
-      });
-
-      document.getElementById('note-form').reset();
-      loadNotes();
-    } catch (e) {
-      alert("Error saving note.");
-    }
-    btn.disabled = false;
-    btn.innerText = "📌 PIN NOTE";
-  }
-
-  function renderCard(index, message, author, bgClass) {
-    const grid = document.getElementById('wall-grid');
-    const newCard = document.createElement('div');
-    newCard.className = `p-6 rounded-2xl shadow-md border border-black/5 relative ${bgClass}`;
-    
-    let deleteBtn = isAdmin ? `<button onclick="deleteNote(${index})" class="absolute top-2 right-3 text-xs bg-black/20 hover:bg-red-600 text-white px-2 py-1 rounded">🗑️ Delete</button>` : "";
-    
-    newCard.innerHTML = `
-      ${deleteBtn}
-      <p class="font-serif text-lg leading-snug mb-6">"${message}"</p>
-      <span class="text-[10px] tracking-widest uppercase opacity-60 font-semibold">— ${author.toUpperCase()}</span>
-    `;
-    grid.appendChild(newCard);
-  }
-
-  function toggleAdmin() {
-    const pin = prompt("Enter Admin PIN:");
-    if (pin === ADMIN_PIN) {
-      isAdmin = true;
-      alert("Admin Mode Unlocked!");
-      loadNotes();
-    } else {
-      alert("Incorrect PIN.");
-    }
-  }
-
-  async function deleteNote(index) {
-    if (confirm("Delete this note?")) {
-      const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { "X-Master-Key": MASTER_KEY }
-      });
-      const getData = await getRes.json();
-      let currentNotes = getData.record || [];
+      const newCard = document.createElement('div');
+      newCard.className = `p-6 rounded-2xl shadow-md border border-black/5 relative flex flex-col justify-between ${bgClass}`;
+      let deleteBtn = isAdmin ? `<button onclick="deleteNote(${index})" class="absolute top-3 right-3 text-xs bg-red-600 text-white px-2.5 py-1 rounded-lg shadow">🗑️ Delete</button>` : "";
       
-      currentNotes.splice(index, 1);
-
-      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Master-Key": MASTER_KEY
-        },
-        body: JSON.stringify(currentNotes)
-      });
-      loadNotes();
+      newCard.innerHTML = `
+        ${deleteBtn}
+        <p class="font-serif text-lg leading-relaxed mb-6">"${message}"</p>
+        <span class="text-[10px] tracking-widest uppercase opacity-75 font-semibold">— ${author.toUpperCase()}</span>
+      `;
+      grid.appendChild(newCard);
     }
-  }
 
-  // Load notes on page opening
-  window.onload = loadNotes;
-</script>
+    function toggleAdmin() {
+      if (prompt("Enter Admin PIN:") === ADMIN_PIN) {
+        isAdmin = true;
+        alert("Admin Mode Unlocked!");
+        loadNotes();
+      } else {
+        alert("Incorrect PIN.");
+      }
+    }
 
+    async function deleteNote(index) {
+      if (confirm("Delete this note?")) {
+        const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+          headers: { "X-Master-Key": MASTER_KEY }
+        });
+        const getData = await getRes.json();
+        let currentNotes = Array.isArray(getData.record) ? getData.record : [];
+        currentNotes.splice(index, 1);
+
+        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Master-Key": MASTER_KEY,
+            "X-Bin-Versioning": "false"
+          },
+          body: JSON.stringify(currentNotes)
+        });
+        loadNotes();
+      }
+    }
+
+    window.onload = loadNotes;
+  </script>
 </body>
 </html>
-
