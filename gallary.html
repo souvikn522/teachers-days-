@@ -1,18 +1,3 @@
-<header class="w-full flex justify-between items-center border-b border-[#2D5A4C]/10 pb-6 mb-12">
-  <div class="flex items-center space-x-3">
-    <div class="w-8 h-8 rounded bg-[#2D5A4C] text-[#F7F4EA] flex items-center justify-center font-serif font-bold text-lg">
-      📖
-    </div>
-    <a href="index.html" class="font-semibold text-lg tracking-tight hover:opacity-80">The Thank-You Desk</a>
-  </div>
-  
-  <nav class="flex space-x-6 text-xs uppercase tracking-widest font-semibold">
-    <a href="index.html" class="hover:text-[#D95338] transition">Home</a>
-    <a href="lessons.html" class="hover:text-[#D95338] transition">Lessons</a>
-    <a href="gallery.html" class="hover:text-[#D95338] transition">Gallery</a>
-    <a href="wall.html" class="bg-[#D95338] text-white px-3 py-1.5 rounded-lg hover:bg-[#D95338]/90 transition">Note Wall</a>
-  </nav>
-</header>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,6 +20,7 @@
 <body class="bg-[#F7F4EA] text-[#2D5A4C] font-sans antialiased min-h-screen">
   <div class="flex flex-col items-center px-4 py-8 md:py-16 max-w-3xl mx-auto">
     
+    <!-- Navbar -->
     <header class="w-full flex justify-between items-center border-b border-[#2D5A4C]/10 pb-6 mb-12">
       <div class="flex items-center space-x-3">
         <div class="w-8 h-8 rounded bg-[#2D5A4C] text-[#F7F4EA] flex items-center justify-center font-serif font-bold text-lg">📖</div>
@@ -44,44 +30,155 @@
         <a href="index.html" class="hover:text-[#D95338] transition">Home</a>
         <a href="lessons.html" class="hover:text-[#D95338] transition">Lessons</a>
         <a href="gallery.html" class="text-[#D95338]">Gallery</a>
-        <a href="wall.html" class="bg-[#D95338] text-white px-3 py-1.5 rounded-lg hover:bg-[#D95338]/90 transition">Note Wall</a>
+        <a href="wall.html" class="bg-[#D95338] text-white px-3 py-1.5 rounded-lg">Note Wall</a>
       </nav>
     </header>
 
-    <section class="w-full py-4 mb-16">
-      <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold block mb-2">05 / MEMORIES & MOMENTS</span>
-      <h1 class="font-serif text-3xl md:text-5xl text-[#2D5A4C] mb-3">Snapshots from the desk.</h1>
-      <p class="text-[#2D5A4C]/60 mb-8">Memories, classroom moments, and quiet reminders of gratitude.</p>
+    <!-- Photo Submission Form -->
+    <section class="w-full bg-[#2D5A4C] text-[#F7F4EA] rounded-3xl p-6 md:p-8 mb-12 shadow-xl">
+      <span class="text-xs uppercase tracking-widest text-[#E9C46A] font-semibold mb-2 block">Upload Photo Memory</span>
+      <h2 class="font-serif text-2xl md:text-3xl mb-4">Share a Classroom Moment</h2>
+      <form id="photo-form" onsubmit="uploadPhoto(event)" class="space-y-3">
+        <input type="url" id="photo-url" placeholder="Paste Image URL (e.g., https://i.imgur.com/example.jpg)" class="w-full bg-[#F7F4EA]/10 border border-[#F7F4EA]/20 rounded-xl px-4 py-3 text-[#F7F4EA] placeholder-[#F7F4EA]/40 text-sm focus:outline-none focus:border-[#E9C46A]" required />
+        <input type="text" id="photo-caption" placeholder="Caption (e.g., Physics lab experiments, 2025)" class="w-full bg-[#F7F4EA]/10 border border-[#F7F4EA]/20 rounded-xl px-4 py-3 text-[#F7F4EA] placeholder-[#F7F4EA]/40 text-sm focus:outline-none focus:border-[#E9C46A]" required />
+        <button type="submit" id="upload-btn" class="bg-[#D95338] text-white font-semibold text-xs tracking-widest uppercase px-6 py-3 rounded-xl hover:bg-[#D95338]/90 transition">
+          📷 Post Photo
+        </button>
+      </form>
+    </section>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-3 rounded-2xl shadow-md border border-[#2D5A4C]/10 transform -rotate-1 hover:rotate-0 transition duration-300">
-          <div class="overflow-hidden rounded-xl bg-neutral-100 aspect-square mb-3">
-            <img src="photo1.jpg" alt="Classroom memory" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80'" />
-          </div>
-          <p class="font-serif text-sm text-[#2D5A4C] text-center italic">The classroom that felt like home</p>
+    <!-- Dynamic Gallery Grid -->
+    <section class="w-full mb-16">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold block mb-1">Student Gallery</span>
+          <h1 class="font-serif text-3xl md:text-4xl">Snapshots from the desk.</h1>
         </div>
+        <button onclick="toggleAdmin()" class="text-[10px] uppercase tracking-widest opacity-40 hover:opacity-100">🔒 Admin</button>
+      </div>
 
-        <div class="bg-white p-3 rounded-2xl shadow-md border border-[#2D5A4C]/10 transform rotate-2 hover:rotate-0 transition duration-300">
-          <div class="overflow-hidden rounded-xl bg-neutral-100 aspect-square mb-3">
-            <img src="photo2.jpg" alt="Teacher note" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80'" />
-          </div>
-          <p class="font-serif text-sm text-[#2D5A4C] text-center italic">Books, chalk, and patience</p>
-        </div>
-
-        <div class="bg-white p-3 rounded-2xl shadow-md border border-[#2D5A4C]/10 transform -rotate-2 hover:rotate-0 transition duration-300">
-          <div class="overflow-hidden rounded-xl bg-neutral-100 aspect-square mb-3">
-            <img src="photo3.jpg" alt="Graduation memory" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80'" />
-          </div>
-          <p class="font-serif text-sm text-[#2D5A4C] text-center italic">Guiding us into the world</p>
-        </div>
+      <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Student uploaded photos render here -->
       </div>
     </section>
 
     <footer class="text-center border-t border-[#2D5A4C]/10 pt-8 w-full text-xs text-[#2D5A4C]/50">
-      <p> An Open Note - Thank You </p>
-      <p>From Every Student </p>
-      <p>Built By Souvik Nandi,Wh-7699548610,souvikn522@gmail.com </p>
+      <p>THE THANK-YOU DESK · AN OPEN NOTE</p>
     </footer>
   </div>
+
+  <script>
+    const GALLERY_BIN_ID = "6a96b10ef5f4af5e295c07d4";
+    const MASTER_KEY = "$2a$10$3bxhzMyIwoZoitZ8QhXn9uO3CfqlluwtQle4bIl8SP/ofAp9xbV8a";
+    const ADMIN_PIN = "1234";
+    let isAdmin = false;
+
+    async function loadGallery() {
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
+          headers: { "X-Master-Key": MASTER_KEY }
+        });
+        const data = await res.json();
+        const photos = data.record || [];
+        
+        const grid = document.getElementById('gallery-grid');
+        grid.innerHTML = "";
+        photos.forEach((photo, index) => {
+          renderPhoto(index, photo.url, photo.caption);
+        });
+      } catch (e) {
+        console.error("Error loading gallery:", e);
+      }
+    }
+
+    async function uploadPhoto(event) {
+      event.preventDefault();
+      const btn = document.getElementById('upload-btn');
+      btn.disabled = true;
+      btn.innerText = "POSTING...";
+
+      const url = document.getElementById('photo-url').value;
+      const caption = document.getElementById('photo-caption').value;
+
+      try {
+        const getRes = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
+          headers: { "X-Master-Key": MASTER_KEY }
+        });
+        const getData = await getRes.json();
+        let photos = getData.record || [];
+
+        photos.unshift({ url, caption });
+
+        await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Master-Key": MASTER_KEY
+          },
+          body: JSON.stringify(photos)
+        });
+
+        document.getElementById('photo-form').reset();
+        loadGallery();
+      } catch (e) {
+        alert("Error posting photo.");
+      }
+      btn.disabled = false;
+      btn.innerText = "📷 POST PHOTO";
+    }
+
+    function renderPhoto(index, url, caption) {
+      const grid = document.getElementById('gallery-grid');
+      const card = document.createElement('div');
+      card.className = "bg-white p-3 rounded-2xl shadow-md border border-[#2D5A4C]/10 relative transform hover:rotate-0 transition duration-300";
+      
+      let deleteBtn = isAdmin ? `<button onclick="deletePhoto(${index})" class="absolute top-4 right-4 text-xs bg-red-600 text-white px-2 py-1 rounded shadow">🗑️</button>` : "";
+
+      card.innerHTML = `
+        ${deleteBtn}
+        <div class="overflow-hidden rounded-xl bg-neutral-100 aspect-square mb-3">
+          <img src="${url}" alt="Memory" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80'" />
+        </div>
+        <p class="font-serif text-sm text-[#2D5A4C] text-center italic">${caption}</p>
+      `;
+      grid.appendChild(card);
+    }
+
+    function toggleAdmin() {
+      const pin = prompt("Enter Admin PIN:");
+      if (pin === ADMIN_PIN) {
+        isAdmin = true;
+        alert("Admin Mode Unlocked!");
+        loadGallery();
+      } else {
+        alert("Incorrect PIN.");
+      }
+    }
+
+    async function deletePhoto(index) {
+      if (confirm("Delete this photo?")) {
+        const getRes = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
+          headers: { "X-Master-Key": MASTER_KEY }
+        });
+        const getData = await getRes.json();
+        let photos = getData.record || [];
+        
+        photos.splice(index, 1);
+
+        await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Master-Key": MASTER_KEY
+          },
+          body: JSON.stringify(photos)
+        });
+        loadGallery();
+      }
+    }
+
+    window.onload = loadGallery;
+  </script>
 </body>
 </html>
+
