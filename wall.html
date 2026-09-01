@@ -1,18 +1,3 @@
-<header class="w-full flex justify-between items-center border-b border-[#2D5A4C]/10 pb-6 mb-12">
-  <div class="flex items-center space-x-3">
-    <div class="w-8 h-8 rounded bg-[#2D5A4C] text-[#F7F4EA] flex items-center justify-center font-serif font-bold text-lg">
-      📖
-    </div>
-    <a href="index.html" class="font-semibold text-lg tracking-tight hover:opacity-80">The Thank-You Desk</a>
-  </div>
-  
-  <nav class="flex space-x-6 text-xs uppercase tracking-widest font-semibold">
-    <a href="index.html" class="hover:text-[#D95338] transition">Home</a>
-    <a href="lessons.html" class="hover:text-[#D95338] transition">Lessons</a>
-    <a href="gallery.html" class="hover:text-[#D95338] transition">Gallery</a>
-    <a href="wall.html" class="bg-[#D95338] text-white px-3 py-1.5 rounded-lg hover:bg-[#D95338]/90 transition">Note Wall</a>
-  </nav>
-</header>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +6,7 @@
   <title>Note Wall | The Thank-You Desk</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+  
   <script>
     tailwind.config = {
       theme: {
@@ -35,6 +21,7 @@
 <body class="bg-[#F7F4EA] text-[#2D5A4C] font-sans antialiased min-h-screen">
   <div class="flex flex-col items-center px-4 py-8 md:py-16 max-w-3xl mx-auto">
     
+    <!-- Navbar -->
     <header class="w-full flex justify-between items-center border-b border-[#2D5A4C]/10 pb-6 mb-12">
       <div class="flex items-center space-x-3">
         <div class="w-8 h-8 rounded bg-[#2D5A4C] text-[#F7F4EA] flex items-center justify-center font-serif font-bold text-lg">📖</div>
@@ -48,53 +35,52 @@
       </nav>
     </header>
 
-    <!-- Interactive Card -->
+    <!-- SECTION 1: Pre-written Sir Dialogues (Only changes when button is pressed) -->
     <section class="w-full mb-16">
       <div class="relative bg-white border border-[#2D5A4C]/10 rounded-2xl p-8 md:p-12 shadow-xl min-h-[240px] flex flex-col justify-between">
         <div class="flex justify-between items-center text-xs tracking-widest text-[#2D5A4C]/40 uppercase mb-6">
-          <span>Teacher's Day · 2026</span>
-          <span id="note-number">NOTE NO. 01</span>
+          <span>Famous Sir Dialogues</span>
+          <span id="quote-number">DIALOGUE NO. 01</span>
         </div>
         <div>
           <blockquote id="quote-text" class="font-serif text-2xl md:text-3xl text-[#2D5A4C] leading-snug mb-4">
-            "You taught me that not knowing the answer is not a dead end. It is the first, brave step toward finding a better question."
+            "Silence in the class! The backbenchers are doing physics experiments with pens again."
           </blockquote>
-          <p id="quote-author" class="italic text-[#D95338] font-serif">With gratitude, from every student</p>
+          <p id="quote-author" class="italic text-[#D95338] font-serif">— Physics Sir</p>
         </div>
         <div class="mt-6 pt-4 border-t border-[#2D5A4C]/5 flex justify-end">
-          <button type="button" onclick="nextQuote()" class="text-xs uppercase tracking-wider font-semibold border border-[#2D5A4C]/20 rounded-lg px-4 py-2 hover:bg-[#2D5A4C] hover:text-[#F7F4EA] transition">
-            🔄 Another Note
+          <button type="button" onclick="nextDialogue()" class="text-xs uppercase tracking-wider font-semibold border border-[#2D5A4C]/20 rounded-lg px-4 py-2 hover:bg-[#2D5A4C] hover:text-[#F7F4EA] transition">
+            🔄 Another Dialogue
           </button>
         </div>
       </div>
     </section>
 
-    <!-- Form Section -->
+    <!-- SECTION 2: Form for Visitors to Submit Their Own Notes -->
     <section class="w-full bg-[#2D5A4C] text-[#F7F4EA] rounded-3xl p-8 md:p-12 mb-16 shadow-2xl">
       <span class="text-xs uppercase tracking-widest text-[#E9C46A] font-semibold mb-2 block">02 / Your Turn</span>
       <h2 class="font-serif text-3xl md:text-5xl mb-4">Put one true thing on the desk.</h2>
       <form id="note-form" onsubmit="addNote(event)" class="space-y-4">
         <input type="text" id="author-input" placeholder="Your name (optional)" class="w-full bg-[#F7F4EA]/10 border border-[#F7F4EA]/20 rounded-xl px-4 py-3 text-[#F7F4EA] placeholder-[#F7F4EA]/40 focus:outline-none focus:border-[#E9C46A]" />
         <textarea rows="3" id="message-input" placeholder="I remember when..." class="w-full bg-[#F7F4EA]/10 border border-[#F7F4EA]/20 rounded-xl px-4 py-3 text-[#F7F4EA] placeholder-[#F7F4EA]/40 focus:outline-none focus:border-[#E9C46A]" required></textarea>
-        <button type="submit" class="bg-[#D95338] text-white font-semibold text-xs tracking-widest uppercase px-6 py-4 rounded-xl hover:bg-[#D95338]/90 transition shadow-md">
+        <button type="submit" id="submit-btn" class="bg-[#D95338] text-white font-semibold text-xs tracking-widest uppercase px-6 py-4 rounded-xl hover:bg-[#D95338]/90 transition shadow-md">
           📌 Pin Note
         </button>
       </form>
     </section>
 
-    <!-- Wall Section -->
+    <!-- SECTION 3: Live Community Wall Grid (Shows visitor comments from Firebase) -->
     <section class="w-full mb-16">
-      <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold mb-2 block">03 / The Note Wall</span>
-      <h2 class="font-serif text-3xl md:text-4xl mb-6">The small things become the big things.</h2>
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold block mb-1">03 / The Note Wall</span>
+          <h2 class="font-serif text-3xl md:text-4xl">The small things become the big things.</h2>
+        </div>
+        <button onclick="toggleAdmin()" class="text-[10px] uppercase tracking-widest opacity-40 hover:opacity-100">🔒 Admin</button>
+      </div>
+      
       <div id="wall-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="p-6 rounded-2xl shadow-md border border-black/5 bg-white text-[#2D5A4C]">
-          <p class="font-serif text-lg leading-snug mb-6">"For making mistakes feel like pencil marks, not permanent ink."</p>
-          <span class="text-[10px] tracking-widest uppercase opacity-60 font-semibold">— A FORMER PERFECTIONIST</span>
-        </div>
-        <div class="p-6 rounded-2xl shadow-md border border-black/5 bg-[#E9C46A] text-[#2D5A4C]">
-          <p class="font-serif text-lg leading-snug mb-6">"You made the back row feel like it belonged in the conversation."</p>
-          <span class="text-[10px] tracking-widest uppercase opacity-60 font-semibold">— CLASS 3B, MANY YEARS LATER</span>
-        </div>
+        <!-- Visitor notes load here from Firebase -->
       </div>
     </section>
 
@@ -103,33 +89,117 @@
     </footer>
   </div>
 
-  <script>
-    const quotes = [
-      { quote: "You taught me that not knowing the answer is not a dead end. It is the first, brave step toward finding a better question.", author: "With gratitude, from every student", noteNo: "01" },
-      { quote: "You made the back row feel like it belonged in the main conversation.", author: "Class 3B, many years later", noteNo: "02" },
-      { quote: "Thank you for asking 'what do you think?' and actually waiting for the real answer.", author: "Someone still thinking", noteNo: "03" }
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    let isAdmin = false;
+    const ADMIN_PIN = "1234";
+
+    // --- PRE-WRITTEN SIR DIALOGUES ARRAY ---
+    // Add or edit as many custom dialogues as you want here:
+    const customDialogues = [
+      { dialogue: "Silence in the class! The backbenchers are doing physics experiments with pens again.", teacher: "— Physics Sir", no: "01" },
+      { dialogue: "Is this a classroom or a vegetable market? I can hear you from the staff room!", teacher: "— Math Sir", no: "02" },
+      { dialogue: "Why are you looking outside the window? Am I teaching on the tree?", teacher: "— Chemistry Sir", no: "03" },
+      { dialogue: "If you don't study now, you will regret it during exam night.", teacher: "— Class Teacher", no: "04" },
+      { dialogue: "Turn to page 42 and read silently. No talking till the bell rings.", teacher: "— English Sir", no: "05" }
     ];
-    let currentQuote = 0;
-    function nextQuote() {
-      currentQuote = (currentQuote + 1) % quotes.length;
-      document.getElementById('quote-text').innerText = `"${quotes[currentQuote].quote}"`;
-      document.getElementById('quote-author').innerText = quotes[currentQuote].author;
-      document.getElementById('note-number').innerText = `NOTE NO. ${quotes[currentQuote].noteNo}`;
-    }
-    function addNote(event) {
+
+    let currentDialogueIndex = 0;
+
+    // Cycle through pre-written dialogues
+    window.nextDialogue = function() {
+      currentDialogueIndex = (currentDialogueIndex + 1) % customDialogues.length;
+      document.getElementById('quote-text').innerText = `"${customDialogues[currentDialogueIndex].dialogue}"`;
+      document.getElementById('quote-author').innerText = customDialogues[currentDialogueIndex].teacher;
+      document.getElementById('quote-number').innerText = `DIALOGUE NO. ${customDialogues[currentDialogueIndex].no}`;
+    };
+
+    // Firebase listener for visitor submissions on wall grid
+    const q = query(collection(db, "notes"), orderBy("createdAt", "desc"));
+    onSnapshot(q, (snapshot) => {
+      const grid = document.getElementById('wall-grid');
+      grid.innerHTML = "";
+      snapshot.forEach((docSnapshot) => {
+        const data = docSnapshot.data();
+        renderCard(docSnapshot.id, data.message, data.author, data.bgClass);
+      });
+    });
+
+    // Handle form submission to database
+    window.addNote = async function(event) {
       event.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.innerText = "PINNING...";
+
       const message = document.getElementById('message-input').value;
       const author = document.getElementById('author-input').value || "ANONYMOUS STUDENT";
       const bgClasses = ["bg-white text-[#2D5A4C]", "bg-[#E9C46A] text-[#2D5A4C]", "bg-[#2D5A4C] text-[#F7F4EA]", "bg-[#D95338] text-white"];
       const randomBg = bgClasses[Math.floor(Math.random() * bgClasses.length)];
+
+      try {
+        await addDoc(collection(db, "notes"), {
+          message: message,
+          author: author,
+          bgClass: randomBg,
+          createdAt: new Date()
+        });
+        document.getElementById('note-form').reset();
+      } catch (e) {
+        alert("Error submitting note.");
+      }
+      btn.disabled = false;
+      btn.innerText = "📌 PIN NOTE";
+    };
+
+    // Render cards on the wall
+    function renderCard(id, message, author, bgClass) {
       const grid = document.getElementById('wall-grid');
       const newCard = document.createElement('div');
-      newCard.className = `p-6 rounded-2xl shadow-md border border-black/5 ${randomBg}`;
-      newCard.innerHTML = `<p class="font-serif text-lg leading-snug mb-6">"${message}"</p><span class="text-[10px] tracking-widest uppercase opacity-60 font-semibold">— ${author.toUpperCase()}</span>`;
-      grid.prepend(newCard);
-      document.getElementById('note-form').reset();
+      newCard.className = `p-6 rounded-2xl shadow-md border border-black/5 relative ${bgClass}`;
+      
+      let deleteBtn = isAdmin ? `<button onclick="deleteNote('${id}')" class="absolute top-2 right-3 text-xs bg-black/20 hover:bg-red-600 text-white px-2 py-1 rounded">🗑️ Delete</button>` : "";
+      
+      newCard.innerHTML = `
+        ${deleteBtn}
+        <p class="font-serif text-lg leading-snug mb-6">"${message}"</p>
+        <span class="text-[10px] tracking-widest uppercase opacity-60 font-semibold">— ${author.toUpperCase()}</span>
+      `;
+      grid.appendChild(newCard);
     }
+
+    // Admin toggle function
+    window.toggleAdmin = function() {
+      const pin = prompt("Enter Admin PIN:");
+      if (pin === ADMIN_PIN) {
+        isAdmin = true;
+        alert("Admin Mode Unlocked!");
+        location.reload();
+      } else {
+        alert("Incorrect PIN.");
+      }
+    };
+
+    // Admin delete note function
+    window.deleteNote = async function(id) {
+      if (confirm("Delete this note?")) {
+        await deleteDoc(doc(db, "notes", id));
+      }
+    };
   </script>
 </body>
 </html>
-
