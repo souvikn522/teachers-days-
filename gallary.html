@@ -67,101 +67,115 @@
     </footer>
   </div>
 
-  <script>
-    const GALLERY_BIN_ID = "6a96b10ef5f4af5e295c07d4";
-    const MASTER_KEY = "$2a$10$3bxhzMyIwoZoitZ8QhXn9uO3CfqlluwtQle4bIl8SP/ofAp9xbV8a";
-    const ADMIN_PIN = "1234";
-    let isAdmin = false;
+<script>
+  const GALLERY_BIN_ID = "6a96b10ef5f4af5e295c07d4";
+  const MASTER_KEY = "$2a$10$3bxhzMyIwoZoitZ8QhXn9uO3CfqlluwtQle4bIl8SP/ofAp9xbV8a";
+  const ADMIN_PIN = "1234";
+  let isAdmin = false;
 
-    async function loadGallery() {
-      try {
-        const res = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
-          headers: { "X-Master-Key": MASTER_KEY }
-        });
-        const data = await res.json();
-        const photos = data.record || [];
-        
-        const grid = document.getElementById('gallery-grid');
-        grid.innerHTML = "";
-        photos.forEach((photo, index) => {
-          renderPhoto(index, photo.url, photo.caption);
-        });
-      } catch (e) {
-        console.error("Error loading gallery:", e);
-      }
-    }
-
-    async function uploadPhoto(event) {
-      event.preventDefault();
-      const btn = document.getElementById('upload-btn');
-      btn.disabled = true;
-      btn.innerText = "POSTING...";
-
-      const url = document.getElementById('photo-url').value;
-      const caption = document.getElementById('photo-caption').value;
-
-      try {
-        const getRes = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
-          headers: { "X-Master-Key": MASTER_KEY }
-        });
-        const getData = await getRes.json();
-        let photos = getData.record || [];
-
-        photos.unshift({ url, caption });
-
-        await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Master-Key": MASTER_KEY
-          },
-          body: JSON.stringify(photos)
-        });
-
-        document.getElementById('photo-form').reset();
-        loadGallery();
-      } catch (e) {
-        alert("Error posting photo.");
-      }
-      btn.disabled = false;
-      btn.innerText = "📷 POST PHOTO";
-    }
-
-    function renderPhoto(index, url, caption) {
-      const grid = document.getElementById('gallery-grid');
-      const card = document.createElement('div');
-      card.className = "bg-white p-3 rounded-2xl shadow-md border border-[#2D5A4C]/10 relative transform hover:rotate-0 transition duration-300";
+  async function loadGallery() {
+    try {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
+        headers: { "X-Master-Key": MASTER_KEY }
+      });
+      const data = await res.json();
       
-      let deleteBtn = isAdmin ? `<button onclick="deletePhoto(${index})" class="absolute top-4 right-4 text-xs bg-red-600 text-white px-2 py-1 rounded shadow">🗑️</button>` : "";
-
-      card.innerHTML = `
-        ${deleteBtn}
-        <div class="overflow-hidden rounded-xl bg-neutral-100 aspect-square mb-3">
-          <img src="${url}" alt="Memory" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80'" />
-        </div>
-        <p class="font-serif text-sm text-[#2D5A4C] text-center italic">${caption}</p>
-      `;
-      grid.appendChild(card);
+      // Safety check: ensure photos is always an array
+      const photos = Array.isArray(data.record) ? data.record : [];
+      
+      const grid = document.getElementById('gallery-grid');
+      grid.innerHTML = "";
+      photos.forEach((photo, index) => {
+        if (photo && photo.url) {
+          renderPhoto(index, photo.url, photo.caption);
+        }
+      });
+    } catch (e) {
+      console.error("Error loading gallery:", e);
     }
+  }
 
-    function toggleAdmin() {
-      const pin = prompt("Enter Admin PIN:");
-      if (pin === ADMIN_PIN) {
-        isAdmin = true;
-        alert("Admin Mode Unlocked!");
-        loadGallery();
-      } else {
-        alert("Incorrect PIN.");
-      }
+  async function uploadPhoto(event) {
+    event.preventDefault();
+    const btn = document.getElementById('upload-btn');
+    btn.disabled = true;
+    btn.innerText = "POSTING...";
+
+    const url = document.getElementById('photo-url').value.trim();
+    const caption = document.getElementById('photo-caption').value.trim();
+
+    try {
+      // 1. Get existing records
+      const getRes = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
+        headers: { "X-Master-Key": MASTER_KEY }
+      });
+      const getData = await getRes.json();
+      
+      // 2. Ensure record is treated as an array
+      let photos = Array.isArray(getData.record) ? getData.record : [];
+
+      // 3. Add new image to top of array
+      photos.unshift({ url: url, caption: caption });
+
+      // 4. Overwrite Bin with updated array
+      const putRes = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": MASTER_KEY,
+          "X-Bin-Versioning": "false"
+        },
+        body: JSON.stringify(photos)
+      });
+
+      if (!putRes.ok) throw new Error("Failed to save to JSONBin");
+
+      document.getElementById('photo-form').reset();
+      await loadGallery();
+    } catch (e) {
+      alert("Error posting photo. Please verify image URL.");
+      console.error(e);
     }
+    btn.disabled = false;
+    btn.innerText = "📷 POST PHOTO";
+  }
 
-    async function deletePhoto(index) {
-      if (confirm("Delete this photo?")) {
+  function renderPhoto(index, url, caption) {
+    const grid = document.getElementById('gallery-grid');
+    const card = document.createElement('div');
+    card.className = "bg-white p-3 rounded-2xl shadow-md border border-[#2D5A4C]/10 relative transform hover:rotate-0 transition duration-300";
+    
+    let deleteBtn = isAdmin ? `<button onclick="deletePhoto(${index})" class="absolute top-4 right-4 text-xs bg-red-600 text-white px-2 py-1 rounded shadow z-10">🗑️</button>` : "";
+
+    card.innerHTML = `
+      ${deleteBtn}
+      <div class="overflow-hidden rounded-xl bg-neutral-100 aspect-square mb-3">
+        <img src="${url}" alt="Memory" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80'" />
+      </div>
+      <p class="font-serif text-sm text-[#2D5A4C] text-center italic">${caption}</p>
+    `;
+    grid.appendChild(card);
+  }
+
+  function toggleAdmin() {
+    const pin = prompt("Enter Admin PIN:");
+    if (pin === ADMIN_PIN) {
+      isAdmin = true;
+      alert("Admin Mode Unlocked!");
+      loadGallery();
+    } else {
+      alert("Incorrect PIN.");
+    }
+  }
+
+  async function deletePhoto(index) {
+    if (confirm("Delete this photo?")) {
+      try {
         const getRes = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
           headers: { "X-Master-Key": MASTER_KEY }
         });
         const getData = await getRes.json();
-        let photos = getData.record || [];
+        let photos = Array.isArray(getData.record) ? getData.record : [];
         
         photos.splice(index, 1);
 
@@ -169,16 +183,22 @@
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            "X-Master-Key": MASTER_KEY
+            "X-Master-Key": MASTER_KEY,
+            "X-Bin-Versioning": "false"
           },
           body: JSON.stringify(photos)
         });
-        loadGallery();
+        await loadGallery();
+      } catch (e) {
+        alert("Error deleting photo.");
       }
     }
+  }
 
-    window.onload = loadGallery;
-  </script>
+  window.onload = loadGallery;
+</script>
+
 </body>
 </html>
+
 
