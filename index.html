@@ -3,7 +3,7 @@
     <div class="w-8 h-8 rounded bg-[#2D5A4C] text-[#F7F4EA] flex items-center justify-center font-serif font-bold text-lg">
       📖
     </div>
-    <a href="index.html" class="font-semibold text-lg tracking-tight hover:opacity-80">The Thank-You Desk</a>
+    <a href="index.html" class="font-semibold text-lg tracking-tight hover:opacity-80">By All Students </a>
   </div>
   
   <nav class="flex space-x-6 text-xs uppercase tracking-widest font-semibold">
@@ -39,7 +39,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Thank-You Desk | Home</title>
+  <title>Happy Teacher's Day | Home</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,20 +58,7 @@
 <body class="bg-[#F7F4EA] text-[#2D5A4C] font-sans antialiased min-h-screen">
   <div class="flex flex-col items-center px-4 py-8 md:py-16 max-w-3xl mx-auto">
     
-    <!-- Navbar -->
-    <header class="w-full flex justify-between items-center border-b border-[#2D5A4C]/10 pb-6 mb-12">
-      <div class="flex items-center space-x-3">
-        <div class="w-8 h-8 rounded bg-[#2D5A4C] text-[#F7F4EA] flex items-center justify-center font-serif font-bold text-lg">📖</div>
-        <a href="index.html" class="font-semibold text-lg tracking-tight">The Thank-You Desk</a>
-      </div>
-      <nav class="flex space-x-4 md:space-x-6 text-xs uppercase tracking-widest font-semibold">
-        <a href="index.html" class="text-[#D95338]">Home</a>
-        <a href="lessons.html" class="hover:text-[#D95338] transition">Lessons</a>
-        <a href="gallery.html" class="hover:text-[#D95338] transition">Gallery</a>
-        <a href="wall.html" class="bg-[#D95338] text-white px-3 py-1.5 rounded-lg hover:bg-[#D95338]/90 transition">Note Wall</a>
-      </nav>
-    </header>
-
+    
     <!-- Main Content -->
     <main class="w-full text-center mb-12">
       <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold mb-4 block">— A Celebration in Three Small Words —</span>
@@ -102,9 +89,12 @@
     </main>
 
     <footer class="text-center border-t border-[#2D5A4C]/10 pt-8 w-full text-xs text-[#2D5A4C]/50">
-      <p>THE THANK-YOU DESK · AN OPEN NOTE</p>
+      <p> An Open Note - Thank You </p>
+      <p>From Every Student </p>
+      <p>Built By Souvik Nandi,Wh-7699548610,souvikn522@gmail.com </p>
     </footer>
   </div>
+</body>
   // Load saved notes when page opens
 document.addEventListener("DOMContentLoaded", () => {
   const savedNotes = JSON.parse(localStorage.getItem("userNotes") || "[]");
@@ -146,6 +136,6 @@ function renderNoteCard(message, author, bgClass) {
   grid.prepend(newCard);
 }
 
-</body>
+
 </html>
 
