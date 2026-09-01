@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Note Wall | The Thank-You Desk</title>
+  <title>Note Wall | From All Students</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
   <script>
@@ -25,7 +25,7 @@
       <div class="flex justify-between items-center">
         <a href="index.html" class="flex items-center space-x-3 group">
           <div class="w-9 h-9 rounded-lg bg-[#2D5A4C] text-[#F7F4EA] flex items-center justify-center font-serif font-bold text-lg shadow-sm">📖</div>
-          <span class="font-serif font-bold text-xl md:text-2xl tracking-tight text-[#2D5A4C]">The Thank-You Desk</span>
+          <span class="font-serif font-bold text-xl md:text-2xl tracking-tight text-[#2D5A4C]">From All Students</span>
         </a>
 
         <!-- Desktop Navigation -->
@@ -60,9 +60,9 @@
         </div>
         <div>
           <blockquote id="quote-text" class="font-serif text-xl md:text-3xl text-[#2D5A4C] leading-snug mb-3">
-            "Silence in the class! The backbenchers are doing physics experiments with pens again."
+            "Get lost."
           </blockquote>
-          <p id="quote-author" class="italic text-[#D95338] font-serif font-medium">— Physics Sir</p>
+          <p id="quote-author" class="italic text-[#D95338] font-serif font-medium">— Susanta Sir</p>
         </div>
         <div class="mt-6 pt-4 border-t border-[#2D5A4C]/10 flex justify-end">
           <button type="button" onclick="nextDialogue()" class="text-xs uppercase tracking-wider font-semibold border border-[#2D5A4C]/20 rounded-xl px-5 py-2.5 hover:bg-[#2D5A4C] hover:text-[#F7F4EA] transition shadow-sm">
@@ -106,9 +106,7 @@
       </div>
     </section>
 
-    <footer class="text-center border-t border-[#2D5A4C]/10 pt-8 w-full text-xs text-[#2D5A4C]/60 tracking-wider">
-      <p>THE THANK-YOU DESK · AN OPEN NOTE</p>
-    </footer>
+    
   </div>
 
   <script>
@@ -124,10 +122,10 @@
     }
 
     const customDialogues = [
-      { dialogue: "Silence in the class! The backbenchers are doing physics experiments with pens again.", teacher: "— Physics Sir", no: "01" },
-      { dialogue: "Is this a classroom or a vegetable market? I can hear you from the staff room!", teacher: "— Math Sir", no: "02" },
-      { dialogue: "Why are you looking outside the window? Am I teaching on the tree?", teacher: "— Chemistry Sir", no: "03" },
-      { dialogue: "Turn to page 42 and read silently. No talking till the bell rings.", teacher: "— English Sir", no: "04" }
+      { dialogue: "Get lost.", teacher: "— Susanta Sir", no: "01" },
+      { dialogue: "Loke ki bollo ,tate amar 108 bar", teacher: "— Susanta Sir", no: "02" },
+      { dialogue: " ", teacher: "— Susanta Sir", no: "03" },
+      { dialogue: " ", teacher: "— Susanta Sir", no: "04" }
     ];
     let currentDialogueIndex = 0;
 
@@ -239,5 +237,10 @@
 
     window.onload = loadNotes;
   </script>
+   <footer class="text-center border-t border-[#2D5A4C]/10 pt-8 w-full text-xs text-[#2D5A4C]/50">
+      <p>Thank You - An Open Note From All Students.</p>
+      <p>Built by Souvik Nandi, Wh-7699548610, souvikn522@gmail.com</p>
+      <p>For more details, contact the Owner</p>
+    </footer>
 </body>
 </html>
