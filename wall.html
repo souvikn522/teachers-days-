@@ -44,9 +44,9 @@
         </div>
         <div>
           <blockquote id="quote-text" class="font-serif text-2xl md:text-3xl text-[#2D5A4C] leading-snug mb-4">
-            "Get lost 🤣. "
+            "Silence in the class! The backbenchers are doing physics experiments with pens again."
           </blockquote>
-          <p id="quote-author" class="italic text-[#D95338] font-serif">— Susanta Sir</p>
+          <p id="quote-author" class="italic text-[#D95338] font-serif">— Physics Sir</p>
         </div>
         <div class="mt-6 pt-4 border-t border-[#2D5A4C]/5 flex justify-end">
           <button type="button" onclick="nextDialogue()" class="text-xs uppercase tracking-wider font-semibold border border-[#2D5A4C]/20 rounded-lg px-4 py-2 hover:bg-[#2D5A4C] hover:text-[#F7F4EA] transition">
@@ -89,119 +89,142 @@
     </footer>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+<!-- Replace your Firebase script block in wall.html with this -->
+<script>
+  // JSONBin Credentials
+  const BIN_ID = "6a96b0c9f5f4af5e295c0658" ;
+  const MASTER_KEY = "$2a$10$3bxhzMyIwoZoitZ8QhXn9uO3CfqlluwtQle4bIl8SP/ofAp9xbV8a";
+  const ADMIN_PIN = "1234"; 
+  let isAdmin = false;
 
-    // Firebase Config
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
+  // Pre-written Sir Dialogues
+  const customDialogues = [
+    { dialogue: "Silence in the class! The backbenchers are doing physics experiments with pens again.", teacher: "— Physics Sir", no: "01" },
+    { dialogue: "Is this a classroom or a vegetable market?", teacher: "— Math Sir", no: "02" },
+    { dialogue: "Why are you looking outside the window?", teacher: "— Chemistry Sir", no: "03" }
+  ];
+  let currentDialogueIndex = 0;
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    let isAdmin = false;
-    const ADMIN_PIN = "1234";
+  function nextDialogue() {
+    currentDialogueIndex = (currentDialogueIndex + 1) % customDialogues.length;
+    document.getElementById('quote-text').innerText = `"${customDialogues[currentDialogueIndex].dialogue}"`;
+    document.getElementById('quote-author').innerText = customDialogues[currentDialogueIndex].teacher;
+    document.getElementById('quote-number').innerText = `DIALOGUE NO. ${customDialogues[currentDialogueIndex].no}`;
+  }
 
-    // --- PRE-WRITTEN SIR DIALOGUES ARRAY ---
-    // Add or edit as many custom dialogues as you want here:
-    const customDialogues = [
-      { dialogue: "Get lost 🤣 .", teacher: "  Susanta Sir", no: "01" },
-     
-    ];
-
-    let currentDialogueIndex = 0;
-
-    // Cycle through pre-written dialogues
-    window.nextDialogue = function() {
-      currentDialogueIndex = (currentDialogueIndex + 1) % customDialogues.length;
-      document.getElementById('quote-text').innerText = `"${customDialogues[currentDialogueIndex].dialogue}"`;
-      document.getElementById('quote-author').innerText = customDialogues[currentDialogueIndex].teacher;
-      document.getElementById('quote-number').innerText = `DIALOGUE NO. ${customDialogues[currentDialogueIndex].no}`;
-    };
-
-    // Firebase listener for visitor submissions on wall grid
-    const q = query(collection(db, "notes"), orderBy("createdAt", "desc"));
-    onSnapshot(q, (snapshot) => {
+  // Fetch submitted notes on load
+  async function loadNotes() {
+    try {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: { "X-Master-Key": MASTER_KEY }
+      });
+      const data = await res.json();
+      const notes = data.record || [];
+      
       const grid = document.getElementById('wall-grid');
       grid.innerHTML = "";
-      snapshot.forEach((docSnapshot) => {
-        const data = docSnapshot.data();
-        renderCard(docSnapshot.id, data.message, data.author, data.bgClass);
+      notes.forEach((item, index) => {
+        renderCard(index, item.message, item.author, item.bgClass);
       });
-    });
-
-    // Handle form submission to database
-    window.addNote = async function(event) {
-      event.preventDefault();
-      const btn = document.getElementById('submit-btn');
-      btn.disabled = true;
-      btn.innerText = "PINNING...";
-
-      const message = document.getElementById('message-input').value;
-      const author = document.getElementById('author-input').value || "ANONYMOUS STUDENT";
-      const bgClasses = ["bg-white text-[#2D5A4C]", "bg-[#E9C46A] text-[#2D5A4C]", "bg-[#2D5A4C] text-[#F7F4EA]", "bg-[#D95338] text-white"];
-      const randomBg = bgClasses[Math.floor(Math.random() * bgClasses.length)];
-
-      try {
-        await addDoc(collection(db, "notes"), {
-          message: message,
-          author: author,
-          bgClass: randomBg,
-          createdAt: new Date()
-        });
-        document.getElementById('note-form').reset();
-      } catch (e) {
-        alert("Error submitting note.");
-      }
-      btn.disabled = false;
-      btn.innerText = "📌 PIN NOTE";
-    };
-
-    // Render cards on the wall
-    function renderCard(id, message, author, bgClass) {
-      const grid = document.getElementById('wall-grid');
-      const newCard = document.createElement('div');
-      newCard.className = `p-6 rounded-2xl shadow-md border border-black/5 relative ${bgClass}`;
-      
-      let deleteBtn = isAdmin ? `<button onclick="deleteNote('${id}')" class="absolute top-2 right-3 text-xs bg-black/20 hover:bg-red-600 text-white px-2 py-1 rounded">🗑️ Delete</button>` : "";
-      
-      newCard.innerHTML = `
-        ${deleteBtn}
-        <p class="font-serif text-lg leading-snug mb-6">"${message}"</p>
-        <span class="text-[10px] tracking-widest uppercase opacity-60 font-semibold">— ${author.toUpperCase()}</span>
-      `;
-      grid.appendChild(newCard);
+    } catch (e) {
+      console.error("Error loading notes:", e);
     }
+  }
 
-    // Admin toggle function
-    window.toggleAdmin = function() {
-      const pin = prompt("Enter Admin PIN:");
-      if (pin === ADMIN_PIN) {
-        isAdmin = true;
-        alert("Admin Mode Unlocked!");
-        location.reload();
-      } else {
-        alert("Incorrect PIN.");
-      }
-    };
+  // Save new student note
+  async function addNote(event) {
+    event.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerText = "PINNING...";
 
-    // Admin delete note function
-    window.deleteNote = async function(id) {
-      if (confirm("Delete this note?")) {
-        await deleteDoc(doc(db, "notes", id));
-      }
-    };
-  </script>
-  <footer class="text-center border-t border-[#2D5A4C]/10 pt-8 w-full text-xs text-[#2D5A4C]/50">
-      <p> An Open Note - Thank You </p>
-      <p>From Every Student </p>
-      <p>Built By Souvik Nandi,Wh-7699548610,souvikn522@gmail.com </p>
-  </footer>
+    const message = document.getElementById('message-input').value;
+    const author = document.getElementById('author-input').value || "ANONYMOUS STUDENT";
+    const bgClasses = ["bg-white text-[#2D5A4C]", "bg-[#E9C46A] text-[#2D5A4C]", "bg-[#2D5A4C] text-[#F7F4EA]", "bg-[#D95338] text-white"];
+    const randomBg = bgClasses[Math.floor(Math.random() * bgClasses.length)];
+
+    try {
+      // Get current array
+      const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: { "X-Master-Key": MASTER_KEY }
+      });
+      const getData = await getRes.json();
+      let currentNotes = getData.record || [];
+
+      // Add new note to front
+      currentNotes.unshift({ message, author, bgClass: randomBg });
+
+      // Save updated array
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": MASTER_KEY
+        },
+        body: JSON.stringify(currentNotes)
+      });
+
+      document.getElementById('note-form').reset();
+      loadNotes();
+    } catch (e) {
+      alert("Error saving note.");
+    }
+    btn.disabled = false;
+    btn.innerText = "📌 PIN NOTE";
+  }
+
+  function renderCard(index, message, author, bgClass) {
+    const grid = document.getElementById('wall-grid');
+    const newCard = document.createElement('div');
+    newCard.className = `p-6 rounded-2xl shadow-md border border-black/5 relative ${bgClass}`;
+    
+    let deleteBtn = isAdmin ? `<button onclick="deleteNote(${index})" class="absolute top-2 right-3 text-xs bg-black/20 hover:bg-red-600 text-white px-2 py-1 rounded">🗑️ Delete</button>` : "";
+    
+    newCard.innerHTML = `
+      ${deleteBtn}
+      <p class="font-serif text-lg leading-snug mb-6">"${message}"</p>
+      <span class="text-[10px] tracking-widest uppercase opacity-60 font-semibold">— ${author.toUpperCase()}</span>
+    `;
+    grid.appendChild(newCard);
+  }
+
+  function toggleAdmin() {
+    const pin = prompt("Enter Admin PIN:");
+    if (pin === ADMIN_PIN) {
+      isAdmin = true;
+      alert("Admin Mode Unlocked!");
+      loadNotes();
+    } else {
+      alert("Incorrect PIN.");
+    }
+  }
+
+  async function deleteNote(index) {
+    if (confirm("Delete this note?")) {
+      const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: { "X-Master-Key": MASTER_KEY }
+      });
+      const getData = await getRes.json();
+      let currentNotes = getData.record || [];
+      
+      currentNotes.splice(index, 1);
+
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": MASTER_KEY
+        },
+        body: JSON.stringify(currentNotes)
+      });
+      loadNotes();
+    }
+  }
+
+  // Load notes on page opening
+  window.onload = loadNotes;
+</script>
+
 </body>
 </html>
+
