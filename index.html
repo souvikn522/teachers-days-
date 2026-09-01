@@ -95,47 +95,6 @@
     </footer>
   </div>
 </body>
-  // Load saved notes when page opens
-document.addEventListener("DOMContentLoaded", () => {
-  const savedNotes = JSON.parse(localStorage.getItem("userNotes") || "[]");
-  savedNotes.forEach(note => renderNoteCard(note.message, note.author, note.bgClass));
-});
-
-function addNote(event) {
-  event.preventDefault();
-  const message = document.getElementById('message-input').value;
-  const author = document.getElementById('author-input').value || "ANONYMOUS STUDENT";
-
-  const bgClasses = [
-    "bg-white text-[#2D5A4C]",
-    "bg-[#E9C46A] text-[#2D5A4C]",
-    "bg-[#2D5A4C] text-[#F7F4EA]",
-    "bg-[#D95338] text-white"
-  ];
-  const randomBg = bgClasses[Math.floor(Math.random() * bgClasses.length)];
-
-  // Render on page
-  renderNoteCard(message, author, randomBg);
-
-  // Save to LocalStorage
-  const savedNotes = JSON.parse(localStorage.getItem("userNotes") || "[]");
-  savedNotes.unshift({ message, author, bgClass: randomBg });
-  localStorage.setItem("userNotes", JSON.stringify(savedNotes));
-
-  document.getElementById('note-form').reset();
-}
-
-function renderNoteCard(message, author, bgClass) {
-  const grid = document.getElementById('wall-grid');
-  const newCard = document.createElement('div');
-  newCard.className = `p-6 rounded-2xl shadow-md border border-black/5 ${bgClass}`;
-  newCard.innerHTML = `
-    <p class="font-serif text-lg leading-snug mb-6">"${message}"</p>
-    <span class="text-[10px] tracking-widest uppercase opacity-60 font-semibold">— ${author.toUpperCase()}</span>
-  `;
-  grid.prepend(newCard);
-}
-
 
 </html>
 
