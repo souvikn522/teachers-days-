@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moderation Portal | The Thank-You Desk</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { paper: '#F7F4EA', forest: '#2D5A4C', terracotta: '#D95338' },
+          fontFamily: { serif: ['Playfair Display', 'serif'], sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#F7F4EA] text-[#2D5A4C] font-sans antialiased min-h-screen">
+  <div class="flex flex-col items-center px-4 md:px-8 py-8 max-w-5xl mx-auto">
+    
+    <div id="login-overlay" class="fixed inset-0 bg-[#2D5A4C] z-50 flex items-center justify-center p-4">
+      <div class="bg-white p-8 rounded-3xl max-w-md w-full shadow-2xl text-center">
+        <div class="w-12 h-12 bg-[#2D5A4C]/10 text-[#2D5A4C] text-2xl rounded-2xl flex items-center justify-center mx-auto mb-4">🔒</div>
+        <h1 class="font-serif text-2xl font-bold mb-2">Admin Portal</h1>
+        <p class="text-xs text-[#2D5A4C]/70 mb-6">Restricted management access for authorized staff.</p>
+        <form onsubmit="authenticate(event)" class="space-y-4">
+          <input type="password" id="passcode" placeholder="Enter Security PIN" class="w-full bg-[#F7F4EA] border border-[#2D5A4C]/20 rounded-xl px-4 py-3 text-center text-lg tracking-widest focus:outline-none focus:ring-2 focus:ring-[#D95338]" required />
+          <button type="submit" class="w-full bg-[#D95338] text-white font-semibold text-xs tracking-widest uppercase py-3.5 rounded-xl hover:bg-[#D95338]/90 transition">
+            Unlock Dashboard
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <header class="w-full border-b border-[#2D5A4C]/15 pb-6 mb-10 flex justify-between items-center">
+      <div>
+        <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold block mb-1">Internal Control</span>
+        <h1 class="font-serif text-3xl font-bold">Content Moderation</h1>
+      </div>
+      <button onclick="logout()" class="text-xs bg-[#D95338] text-white font-semibold uppercase tracking-wider px-4 py-2 rounded-xl">Exit Admin</button>
+    </header>
+
+    <div class="flex space-x-4 mb-8 w-full border-b border-[#2D5A4C]/10 pb-4">
+      <button onclick="switchTab('notes')" id="tab-notes" class="text-xs font-semibold uppercase tracking-widest px-5 py-2.5 rounded-xl bg-[#2D5A4C] text-white">Manage Notes</button>
+      <button onclick="switchTab('gallery')" id="tab-gallery" class="text-xs font-semibold uppercase tracking-widest px-5 py-2.5 rounded-xl bg-[#2D5A4C]/10 text-[#2D5A4C]">Manage Photos</button>
+    </div>
+
+    <section id="notes-section" class="w-full">
+      <h2 class="font-serif text-xl font-bold mb-4">Live Note Wall Messages</h2>
+      <div id="admin-notes-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </section>
+
+    <section id="gallery-section" class="w-full hidden">
+      <h2 class="font-serif text-xl font-bold mb-4">Uploaded Gallery Photos</h2>
+      <div id="admin-gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+    </section>
+
+  </div>
+
+  <script>
+    const NOTES_BIN_ID = "6a96b10ef5f4af5e295c07d4"; // Insert Notes Bin ID
+    const GALLERY_BIN_ID = "6a96b10ef5f4af5e295c07d4"; // Insert Gallery Bin ID
+    const MASTER_KEY = "$2a$10$3bxhzMyIwoZoitZ8QhXn9uO3CfqlluwtQle4bIl8SP/ofAp9xbV8a"; 
+    const ADMIN_PIN = "1234"; // Set secret passcode
+
+    function authenticate(event) {
+      event.preventDefault();
+      const input = document.getElementById('passcode').value;
+      if (input === ADMIN_PIN) {
+        document.getElementById('login-overlay').classList.add('hidden');
+        loadAllData();
+      } else {
+        alert("Incorrect Security PIN.");
+      }
+    }
+
+    function logout() {
+      location.reload();
+    }
+
+    function switchTab(tab) {
+      if (tab === 'notes') {
+        document.getElementById('notes-section').classList.remove('hidden');
+        document.getElementById('gallery-section').classList.add('hidden');
+        document.getElementById('tab-notes').className = "text-xs font-semibold uppercase tracking-widest px-5 py-2.5 rounded-xl bg-[#2D5A4C] text-white";
+        document.getElementById('tab-gallery').className = "text-xs font-semibold uppercase tracking-widest px-5 py-2.5 rounded-xl bg-[#2D5A4C]/10 text-[#2D5A4C]";
+      } else {
+        document.getElementById('notes-section').classList.add('hidden');
+        document.getElementById('gallery-section').classList.remove('hidden');
+        document.getElementById('tab-gallery').className = "text-xs font-semibold uppercase tracking-widest px-5 py-2.5 rounded-xl bg-[#2D5A4C] text-white";
+        document.getElementById('tab-notes').className = "text-xs font-semibold uppercase tracking-widest px-5 py-2.5 rounded-xl bg-[#2D5A4C]/10 text-[#2D5A4C]";
+      }
+    }
+
+    async function loadAllData() {
+      loadNotes();
+      loadGallery();
+    }
+
+    // --- NOTES MODERATION LOGIC ---
+    async function loadNotes() {
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${NOTES_BIN_ID}/latest`, {
+          headers: { "X-Master-Key": MASTER_KEY }
+        });
+        const data = await res.json();
+        const notes = Array.isArray(data.record) ? data.record : [];
+        const grid = document.getElementById('admin-notes-grid');
+        grid.innerHTML = "";
+
+        notes.forEach((item, index) => {
+          const card = document.createElement('div');
+          card.className = "bg-white p-5 rounded-2xl border border-[#2D5A4C]/10 flex flex-col justify-between shadow-sm relative";
+          card.innerHTML = `
+            <button onclick="deleteNote(${index})" class="absolute top-3 right-3 text-xs bg-red-600 text-white px-3 py-1 rounded-lg font-semibold shadow hover:bg-red-700">🗑️ Delete</button>
+            <p class="font-serif text-base mb-4 pr-16 text-[#2D5A4C]">"${item.message}"</p>
+            <span class="text-[10px] tracking-widest uppercase opacity-60 font-semibold">— ${item.author}</span>
+          `;
+          grid.appendChild(card);
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function deleteNote(index) {
+      if (confirm("Permanently delete this note?")) {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${NOTES_BIN_ID}/latest`, {
+          headers: { "X-Master-Key": MASTER_KEY }
+        });
+        const data = await res.json();
+        let notes = Array.isArray(data.record) ? data.record : [];
+        notes.splice(index, 1);
+
+        await fetch(`https://api.jsonbin.io/v3/b/${NOTES_BIN_ID}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json", "X-Master-Key": MASTER_KEY, "X-Bin-Versioning": "false" },
+          body: JSON.stringify(notes)
+        });
+        loadNotes();
+      }
+    }
+
+    // --- GALLERY MODERATION LOGIC ---
+    async function loadGallery() {
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
+          headers: { "X-Master-Key": MASTER_KEY }
+        });
+        const data = await res.json();
+        const photos = Array.isArray(data.record) ? data.record : [];
+        const grid = document.getElementById('admin-gallery-grid');
+        grid.innerHTML = "";
+
+        photos.forEach((photo, index) => {
+          const card = document.createElement('div');
+          card.className = "bg-white p-3 rounded-2xl border border-[#2D5A4C]/10 shadow-sm relative";
+          card.innerHTML = `
+            <button onclick="deletePhoto(${index})" class="absolute top-4 right-4 text-xs bg-red-600 text-white px-3 py-1 rounded-lg font-semibold shadow z-10 hover:bg-red-700">🗑️ Delete</button>
+            <div class="overflow-hidden rounded-xl bg-neutral-100 aspect-square mb-2">
+              <img src="${photo.url}" alt="Memory" class="w-full h-full object-cover" />
+            </div>
+            <p class="font-serif text-xs text-[#2D5A4C] text-center italic font-medium">${photo.caption}</p>
+          `;
+          grid.appendChild(card);
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function deletePhoto(index) {
+      if (confirm("Permanently delete this photo?")) {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
+          headers: { "X-Master-Key": MASTER_KEY }
+        });
+        const data = await res.json();
+        let photos = Array.isArray(data.record) ? data.record : [];
+        photos.splice(index, 1);
+
+        await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json", "X-Master-Key": MASTER_KEY, "X-Bin-Versioning": "false" },
+          body: JSON.stringify(photos)
+        });
+        loadGallery();
+      }
+    }
+  </script>
+</body>
+</html>
