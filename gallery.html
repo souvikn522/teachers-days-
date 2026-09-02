@@ -80,8 +80,7 @@
           <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold block mb-1">Student Gallery</span>
           <h1 class="font-serif text-2xl md:text-3xl font-bold">Snapshots from the desk.</h1>
         </div>
-        <button onclick="toggleAdmin()" class="text-[10px] uppercase tracking-widest bg-[#2D5A4C]/10 px-3 py-1.5 rounded-lg hover:bg-[#2D5A4C] hover:text-white transition font-semibold">🔒 Admin</button>
-      </div>
+       
 
       <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <!-- Rendered photos -->
@@ -189,54 +188,18 @@
     }
 
     function renderPhoto(index, url, caption) {
-      const grid = document.getElementById('gallery-grid');
-      const card = document.createElement('div');
-      card.className = "bg-white p-3.5 rounded-2xl shadow-md border border-[#2D5A4C]/10 relative transition duration-300 hover:shadow-xl";
-      
-      let deleteBtn = isAdmin ? `<button onclick="deletePhoto(${index})" class="absolute top-4 right-4 text-xs bg-red-600 text-white px-2.5 py-1 rounded-lg shadow z-10">🗑️</button>` : "";
+  const grid = document.getElementById('gallery-grid');
+  const card = document.createElement('div');
+  card.className = "bg-white p-3.5 rounded-2xl shadow-md border border-[#2D5A4C]/10 transition duration-300 hover:shadow-xl";
 
-      card.innerHTML = `
-        ${deleteBtn}
-        <div class="overflow-hidden rounded-xl bg-neutral-100 aspect-square mb-3">
-          <img src="${url}" alt="Memory" class="w-full h-full object-cover" />
-        </div>
-        <p class="font-serif text-sm text-[#2D5A4C] text-center italic font-medium px-1">${caption}</p>
-      `;
-      grid.appendChild(card);
-    }
-
-    function toggleAdmin() {
-      if (prompt("Enter Admin PIN:") === ADMIN_PIN) {
-        isAdmin = true;
-        alert("Admin Mode Unlocked!");
-        loadGallery();
-      } else {
-        alert("Incorrect PIN.");
-      }
-    }
-
-    async function deletePhoto(index) {
-      if (confirm("Delete this photo?")) {
-        const getRes = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
-          headers: { "X-Master-Key": MASTER_KEY }
-        });
-        const getData = await getRes.json();
-        let photos = Array.isArray(getData.record) ? getData.record : [];
-        
-        photos.splice(index, 1);
-
-        await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Master-Key": MASTER_KEY,
-            "X-Bin-Versioning": "false"
-          },
-          body: JSON.stringify(photos)
-        });
-        loadGallery();
-      }
-    }
+  card.innerHTML = `
+    <div class="overflow-hidden rounded-xl bg-neutral-100 aspect-square mb-3">
+      <img src="${url}" alt="Memory" class="w-full h-full object-cover" />
+    </div>
+    <p class="font-serif text-sm text-[#2D5A4C] text-center italic font-medium px-1">${caption}</p>
+  `;
+  grid.appendChild(card);
+}
 
     window.onload = loadGallery;
   </script>
