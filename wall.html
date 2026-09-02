@@ -98,11 +98,7 @@
           <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold block mb-1">03 / The Note Wall</span>
           <h2 class="font-serif text-2xl md:text-3xl font-bold">The small things become the big things.</h2>
         </div>
-        <button onclick="toggleAdmin()" class="text-[10px] uppercase tracking-widest bg-[#2D5A4C]/10 px-3 py-1.5 rounded-lg hover:bg-[#2D5A4C] hover:text-white transition font-semibold">🔒 Admin</button>
-      </div>
-      
-      <div id="wall-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <!-- Notes rendered here -->
+       
       </div>
     </section>
 
@@ -190,52 +186,16 @@
     }
 
     function renderCard(index, message, author, bgClass) {
-      const grid = document.getElementById('wall-grid');
-      const newCard = document.createElement('div');
-      newCard.className = `p-6 rounded-2xl shadow-md border border-black/5 relative flex flex-col justify-between ${bgClass}`;
-      let deleteBtn = isAdmin ? `<button onclick="deleteNote(${index})" class="absolute top-3 right-3 text-xs bg-red-600 text-white px-2.5 py-1 rounded-lg shadow">🗑️ Delete</button>` : "";
-      
-      newCard.innerHTML = `
-        ${deleteBtn}
-        <p class="font-serif text-lg leading-relaxed mb-6">"${message}"</p>
-        <span class="text-[10px] tracking-widest uppercase opacity-75 font-semibold">— ${author.toUpperCase()}</span>
-      `;
-      grid.appendChild(newCard);
-    }
-
-    function toggleAdmin() {
-      if (prompt("Enter Admin PIN:") === ADMIN_PIN) {
-        isAdmin = true;
-        alert("Admin Mode Unlocked!");
-        loadNotes();
-      } else {
-        alert("Incorrect PIN.");
-      }
-    }
-
-    async function deleteNote(index) {
-      if (confirm("Delete this note?")) {
-        const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-          headers: { "X-Master-Key": MASTER_KEY }
-        });
-        const getData = await getRes.json();
-        let currentNotes = Array.isArray(getData.record) ? getData.record : [];
-        currentNotes.splice(index, 1);
-
-        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Master-Key": MASTER_KEY,
-            "X-Bin-Versioning": "false"
-          },
-          body: JSON.stringify(currentNotes)
-        });
-        loadNotes();
-      }
-    }
-
-    window.onload = loadNotes;
+  const grid = document.getElementById('wall-grid');
+  const newCard = document.createElement('div');
+  newCard.className = `p-6 rounded-2xl shadow-md border border-black/5 relative flex flex-col justify-between ${bgClass}`;
+  
+  newCard.innerHTML = `
+    <p class="font-serif text-lg leading-relaxed mb-6">"${message}"</p>
+    <span class="text-[10px] tracking-widest uppercase opacity-75 font-semibold">— ${author.toUpperCase()}</span>
+  `;
+  grid.appendChild(newCard);
+}
   </script>
    <footer class="text-center border-t border-[#2D5A4C]/10 pt-8 w-full text-xs text-[#2D5A4C]/50">
       <p>Thank You - An Open Note From All Students.</p>
