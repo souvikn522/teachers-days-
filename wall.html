@@ -106,9 +106,177 @@
     
   </div>
 
-  <script>
-function _0x3222(_0x17bf5e,_0x1a964c){_0x17bf5e=_0x17bf5e-0x70;const _0x3eeb81=_0x3eeb();let _0x322238=_0x3eeb81[_0x17bf5e];return _0x322238;}const _0x5eeb64=_0x3222;(function(_0x453983,_0x36a868){const _0x4d2e14=_0x3222,_0x1dce44=_0x453983();while(!![]){try{const _0x2e0d96=-parseInt(_0x4d2e14(0x91))/0x1+-parseInt(_0x4d2e14(0x92))/0x2+-parseInt(_0x4d2e14(0xab))/0x3*(-parseInt(_0x4d2e14(0x74))/0x4)+parseInt(_0x4d2e14(0xaf))/0x5*(parseInt(_0x4d2e14(0xa4))/0x6)+-parseInt(_0x4d2e14(0x9a))/0x7*(-parseInt(_0x4d2e14(0x8c))/0x8)+parseInt(_0x4d2e14(0x9d))/0x9+-parseInt(_0x4d2e14(0xaa))/0xa*(parseInt(_0x4d2e14(0x77))/0xb);if(_0x2e0d96===_0x36a868)break;else _0x1dce44['push'](_0x1dce44['shift']());}catch(_0xbf5c0e){_0x1dce44['push'](_0x1dce44['shift']());}}}(_0x3eeb,0x4b95a));const BIN_ID=_0x5eeb64(0x82),ACCESS_KEY=_0x5eeb64(0x95);function toggleMobileMenu(){const _0x2d84bd=_0x5eeb64,_0x49cac5=document['getElementById'](_0x2d84bd(0x75));_0x49cac5[_0x2d84bd(0x86)][_0x2d84bd(0xb7)](_0x2d84bd(0xbd)),_0x49cac5[_0x2d84bd(0x86)]['toggle'](_0x2d84bd(0x79));}async function loadNotes(){const _0x1e77a2=_0x5eeb64;try{const _0x495b27=await fetch(_0x1e77a2(0x8d)+BIN_ID+_0x1e77a2(0x81),{'headers':{'X-Access-Key':ACCESS_KEY}}),_0x4ca1c5=await _0x495b27['json'](),_0x23bc7b=Array[_0x1e77a2(0x9b)](_0x4ca1c5[_0x1e77a2(0xb0)])?_0x4ca1c5[_0x1e77a2(0xb0)]:[],_0x3e11b6=document[_0x1e77a2(0x7b)]('wall-grid');_0x3e11b6[_0x1e77a2(0x83)]='',_0x23bc7b[_0x1e77a2(0x70)]((_0x18761c,_0x2f2eac)=>{renderCard(_0x2f2eac,_0x18761c);});}catch(_0x470870){console[_0x1e77a2(0x76)](_0x1e77a2(0xa3),_0x470870);}}async function addNote(_0x10d5c6){const _0x2f3002=_0x5eeb64;_0x10d5c6[_0x2f3002(0xb6)]();const _0x25286b=document[_0x2f3002(0x7b)](_0x2f3002(0x96));_0x25286b[_0x2f3002(0x7e)]=!![],_0x25286b[_0x2f3002(0xa2)]=_0x2f3002(0x8f);const _0x5b170b=document[_0x2f3002(0x7b)](_0x2f3002(0x98))['value'][_0x2f3002(0xb9)](),_0x3d2ec0=document[_0x2f3002(0x7b)](_0x2f3002(0x87))[_0x2f3002(0xb1)][_0x2f3002(0xb9)]()||_0x2f3002(0x97),_0xa7650a=[_0x2f3002(0x7a),_0x2f3002(0x90),_0x2f3002(0x7c),'bg-[#D95338]\x20text-white'],_0x3ba54e=_0xa7650a[Math['floor'](Math[_0x2f3002(0xa8)]()*_0xa7650a[_0x2f3002(0xb5)])];try{const _0x3a33a0=await fetch(_0x2f3002(0x8d)+BIN_ID+_0x2f3002(0x81),{'headers':{'X-Access-Key':ACCESS_KEY}}),_0x544692=await _0x3a33a0['json']();let _0x186c32=Array['isArray'](_0x544692['record'])?_0x544692[_0x2f3002(0xb0)]:[];_0x186c32[_0x2f3002(0xbb)]({'message':_0x5b170b,'author':_0x3d2ec0,'bgClass':_0x3ba54e,'likes':0x0,'comments':[]});const _0x2747b7=await fetch('https://api.jsonbin.io/v3/b/'+BIN_ID,{'method':'PUT','headers':{'Content-Type':_0x2f3002(0x7d),'X-Access-Key':ACCESS_KEY,'X-Bin-Versioning':'false'},'body':JSON[_0x2f3002(0x78)](_0x186c32)});if(!_0x2747b7['ok'])throw new Error('API\x20Save\x20Failed');document[_0x2f3002(0x7b)]('note-form')[_0x2f3002(0x93)](),await loadNotes();}catch(_0x58910b){alert(_0x2f3002(0x84));}_0x25286b[_0x2f3002(0x7e)]=![],_0x25286b[_0x2f3002(0xa2)]='📌\x20PIN\x20NOTE';}function renderCard(_0x3008ea,_0x3381d9){const _0x48f61e=_0x5eeb64,_0x4afad3=document[_0x48f61e(0x7b)](_0x48f61e(0x99)),_0x261c80=document[_0x48f61e(0x73)]('div');_0x261c80[_0x48f61e(0xba)]=_0x48f61e(0x7f)+_0x3381d9[_0x48f61e(0xac)];const _0x3f29b7=_0x3381d9[_0x48f61e(0xa6)]||0x0,_0x511690=_0x3381d9['comments']||[],_0x317734=_0x511690[_0x48f61e(0xae)](_0xd572da=>_0x48f61e(0x9f)+_0xd572da[_0x48f61e(0x9e)]+_0x48f61e(0x89)+_0xd572da[_0x48f61e(0xb2)]+_0x48f61e(0x8a))['join']('');_0x261c80[_0x48f61e(0x83)]=_0x48f61e(0xa1)+_0x3381d9[_0x48f61e(0xa5)]+'\x22</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-[10px]\x20tracking-widest\x20uppercase\x20opacity-75\x20font-semibold\x20block\x20break-all\x22>—\x20'+_0x3381d9[_0x48f61e(0x71)][_0x48f61e(0x8e)]()+'</span>\x0a\x20\x20\x20\x20\x20\x20</div>\x0a\x0a\x20\x20\x20\x20\x20\x20<div\x20class=\x22mt-6\x20pt-3\x20border-t\x20border-black/10\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20justify-between\x20items-center\x20text-xs\x20font-semibold\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22likeNote('+_0x3008ea+_0x48f61e(0xbc)+_0x3f29b7+_0x48f61e(0xad)+_0x3008ea+_0x48f61e(0xa9)+_0x511690[_0x48f61e(0xb5)]+')\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22comments-drawer-'+_0x3008ea+'\x22\x20class=\x22hidden\x20mt-3\x20text-left\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22max-h-32\x20overflow-y-auto\x20mb-2\x22>'+_0x317734+_0x48f61e(0xb8)+_0x3008ea+_0x48f61e(0xb4)+_0x3008ea+')\x22\x20class=\x22bg-[#2D5A4C]\x20text-white\x20text-xs\x20px-3\x20py-1.5\x20rounded-xl\x20font-medium\x22>Post</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20',_0x4afad3[_0x48f61e(0xb3)](_0x261c80);}async function likeNote(_0x597d1c){const _0x174bb3=_0x5eeb64,_0x392cbe=await fetch(_0x174bb3(0x8d)+BIN_ID+_0x174bb3(0x81),{'headers':{'X-Access-Key':ACCESS_KEY}}),_0x47f80d=await _0x392cbe['json']();let _0x5a8abd=_0x47f80d[_0x174bb3(0xb0)];_0x5a8abd[_0x597d1c][_0x174bb3(0xa6)]=(_0x5a8abd[_0x597d1c][_0x174bb3(0xa6)]||0x0)+0x1,await fetch(_0x174bb3(0x8d)+BIN_ID,{'method':'PUT','headers':{'Content-Type':_0x174bb3(0x7d),'X-Access-Key':ACCESS_KEY,'X-Bin-Versioning':_0x174bb3(0xa0)},'body':JSON[_0x174bb3(0x78)](_0x5a8abd)}),loadNotes();}function toggleCommentDrawer(_0xd7af81){const _0x16572a=_0x5eeb64,_0x512843=document['getElementById'](_0x16572a(0xa7)+_0xd7af81);_0x512843[_0x16572a(0x86)]['toggle']('hidden');}function _0x3eeb(){const _0x101a4a=['push','2170485ufbWnS','user','\x0a\x20\x20\x20\x20\x20\x20<div\x20class=\x22bg-black/5\x20p-2\x20rounded-lg\x20my-1\x20text-xs\x20break-words\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22font-bold\x20opacity-80\x22>','false','\x0a\x20\x20\x20\x20\x20\x20<div\x20class=\x22overflow-hidden\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22font-serif\x20text-lg\x20leading-relaxed\x20mb-4\x20break-words\x20break-all\x20whitespace-pre-line\x22>\x22','innerText','Error\x20loading\x20notes:','179718AwwPqM','message','likes','comments-drawer-','random',')\x22\x20class=\x22opacity-80\x20hover:opacity-100\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20💬\x20Comments\x20(','10VJAPDf','9BGgDea','bgClass','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22toggleCommentDrawer(','map','20UpHudN','record','value','text','appendChild','\x22\x20placeholder=\x22Write\x20a\x20reply...\x22\x20class=\x22w-full\x20bg-black/10\x20px-3\x20py-1.5\x20rounded-xl\x20text-xs\x20focus:outline-none\x20placeholder-black/50\x22\x20/>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22addComment(','length','preventDefault','toggle','</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20gap-2\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22text\x22\x20id=\x22comment-input-','trim','className','unshift',')\x22\x20class=\x22flex\x20items-center\x20space-x-1\x20bg-black/5\x20hover:bg-black/10\x20px-3\x20py-1.5\x20rounded-xl\x20transition\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>❤️</span>\x20<span>','hidden','forEach','author','comments','createElement','439444dMDSAo','mobile-menu','error','3324101akduOK','stringify','flex','bg-white\x20text-[#2D5A4C]','getElementById','bg-[#2D5A4C]\x20text-[#F7F4EA]','application/json','disabled','p-6\x20rounded-2xl\x20shadow-md\x20border\x20border-black/5\x20flex\x20flex-col\x20justify-between\x20break-all\x20break-words\x20overflow-hidden\x20','PUT','/latest','6a96b10ef5f4af5e295c07d4','innerHTML','Error\x20saving\x20note.\x20Ensure\x20Update\x20permission\x20is\x20active\x20on\x20JSONBin.','json','classList','author-input','Student',':</span>\x20','\x0a\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20','onload','8wJPmwF','https://api.jsonbin.io/v3/b/','toUpperCase','PINNING...','bg-[#E9C46A]\x20text-[#2D5A4C]','154022ZCkaKZ','324152jRcdbs','reset','comment-input-','PASTE_YOUR_RESTRICTED_ACCESS_KEY_HERE','submit-btn','ANONYMOUS\x20STUDENT','message-input','wall-grid','1661261gNIPAV','isArray'];_0x3eeb=function(){return _0x101a4a;};return _0x3eeb();}async function addComment(_0x2660a7){const _0x2b2441=_0x5eeb64,_0x32af6c=document['getElementById'](_0x2b2441(0x94)+_0x2660a7),_0x5eca14=_0x32af6c[_0x2b2441(0xb1)][_0x2b2441(0xb9)]();if(!_0x5eca14)return;const _0x546f0c=await fetch(_0x2b2441(0x8d)+BIN_ID+_0x2b2441(0x81),{'headers':{'X-Access-Key':ACCESS_KEY}}),_0x479927=await _0x546f0c[_0x2b2441(0x85)]();let _0x583630=_0x479927[_0x2b2441(0xb0)];if(!_0x583630[_0x2660a7][_0x2b2441(0x72)])_0x583630[_0x2660a7][_0x2b2441(0x72)]=[];_0x583630[_0x2660a7][_0x2b2441(0x72)][_0x2b2441(0x9c)]({'user':_0x2b2441(0x88),'text':_0x5eca14}),await fetch('https://api.jsonbin.io/v3/b/'+BIN_ID,{'method':_0x2b2441(0x80),'headers':{'Content-Type':'application/json','X-Access-Key':ACCESS_KEY,'X-Bin-Versioning':_0x2b2441(0xa0)},'body':JSON[_0x2b2441(0x78)](_0x583630)}),loadNotes();}window[_0x5eeb64(0x8b)]=loadNotes;
-  </script>
+
+    <script>
+  // CONFIGURATION
+  const BIN_ID = "6a96b0c9f5f4af5e295c0658"; // Notes Bin ID
+  const ACCESS_KEY = "$2a$10$gcOlQPwOsess/KtSM0my8.XBPGMBMrVvEV/ENcHzE42yseL.5tnFK"; // Access Key with READ + UPDATE permissions
+
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('hidden');
+    menu.classList.toggle('flex');
+  }
+
+  async function loadNotes() {
+    try {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: { "X-Access-Key": ACCESS_KEY }
+      });
+      const data = await res.json();
+      const notes = Array.isArray(data.record) ? data.record : [];
+      const grid = document.getElementById('wall-grid');
+      grid.innerHTML = "";
+
+      notes.forEach((item, index) => {
+        renderCard(index, item);
+      });
+    } catch (e) {
+      console.error("Error loading notes:", e);
+    }
+  }
+
+  async function addNote(event) {
+    event.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerText = "PINNING...";
+
+    const message = document.getElementById('message-input').value.trim();
+    const author = document.getElementById('author-input').value.trim() || "ANONYMOUS STUDENT";
+    const bgClasses = ["bg-white text-[#2D5A4C]", "bg-[#E9C46A] text-[#2D5A4C]", "bg-[#2D5A4C] text-[#F7F4EA]", "bg-[#D95338] text-white"];
+    const randomBg = bgClasses[Math.floor(Math.random() * bgClasses.length)];
+
+    try {
+      const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: { "X-Access-Key": ACCESS_KEY }
+      });
+      const getData = await getRes.json();
+      let currentNotes = Array.isArray(getData.record) ? getData.record : [];
+
+      currentNotes.unshift({
+        message,
+        author,
+        bgClass: randomBg,
+        likes: 0,
+        comments: []
+      });
+
+      const putRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Access-Key": ACCESS_KEY,
+          "X-Bin-Versioning": "false"
+        },
+        body: JSON.stringify(currentNotes)
+      });
+
+      if (!putRes.ok) throw new Error("API Save Failed");
+
+      document.getElementById('note-form').reset();
+      await loadNotes();
+    } catch (e) {
+      alert("Error saving note. Ensure Update permission is active on your JSONBin Access Key.");
+    }
+    btn.disabled = false;
+    btn.innerText = "📌 PIN NOTE";
+  }
+
+  function renderCard(index, item) {
+    const grid = document.getElementById('wall-grid');
+    const card = document.createElement('div');
+    card.className = `p-6 rounded-2xl shadow-md border border-black/5 flex flex-col justify-between break-all break-words overflow-hidden ${item.bgClass}`;
+
+    const likesCount = item.likes || 0;
+    const commentsList = item.comments || [];
+
+    const commentsHtml = commentsList.map(c => `
+      <div class="bg-black/5 p-2 rounded-lg my-1 text-xs break-words">
+        <span class="font-bold opacity-80">${c.user}:</span> ${c.text}
+      </div>
+    `).join('');
+
+    card.innerHTML = `
+      <div class="overflow-hidden">
+        <p class="font-serif text-lg leading-relaxed mb-4 break-words break-all whitespace-pre-line">"${item.message}"</p>
+        <span class="text-[10px] tracking-widest uppercase opacity-75 font-semibold block break-all">— ${item.author.toUpperCase()}</span>
+      </div>
+
+      <div class="mt-6 pt-3 border-t border-black/10">
+        <div class="flex justify-between items-center text-xs font-semibold">
+          <button onclick="likeNote(${index})" class="flex items-center space-x-1 bg-black/5 hover:bg-black/10 px-3 py-1.5 rounded-xl transition">
+            <span>❤️</span> <span>${likesCount}</span>
+          </button>
+          <button onclick="toggleCommentDrawer(${index})" class="opacity-80 hover:opacity-100">
+            💬 Comments (${commentsList.length})
+          </button>
+        </div>
+
+        <div id="comments-drawer-${index}" class="hidden mt-3 text-left">
+          <div class="max-h-32 overflow-y-auto mb-2">${commentsHtml}</div>
+          <div class="flex gap-2">
+            <input type="text" id="comment-input-${index}" placeholder="Write a reply..." class="w-full bg-black/10 px-3 py-1.5 rounded-xl text-xs focus:outline-none placeholder-black/50" />
+            <button onclick="addComment(${index})" class="bg-[#2D5A4C] text-white text-xs px-3 py-1.5 rounded-xl font-medium">Post</button>
+          </div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  }
+
+  async function likeNote(index) {
+    try {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { "X-Access-Key": ACCESS_KEY } });
+      const data = await res.json();
+      let notes = data.record;
+
+      notes[index].likes = (notes[index].likes || 0) + 1;
+
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", "X-Access-Key": ACCESS_KEY, "X-Bin-Versioning": "false" },
+        body: JSON.stringify(notes)
+      });
+      loadNotes();
+    } catch (e) {
+      alert("Error updating likes. Check JSONBin permissions.");
+    }
+  }
+
+  function toggleCommentDrawer(index) {
+    const drawer = document.getElementById(`comments-drawer-${index}`);
+    drawer.classList.toggle('hidden');
+  }
+
+  async function addComment(index) {
+    const input = document.getElementById(`comment-input-${index}`);
+    const text = input.value.trim();
+    if (!text) return;
+
+    try {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { "X-Access-Key": ACCESS_KEY } });
+      const data = await res.json();
+      let notes = data.record;
+
+      if (!notes[index].comments) notes[index].comments = [];
+      notes[index].comments.push({ user: "Student", text: text });
+
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", "X-Access-Key": ACCESS_KEY, "X-Bin-Versioning": "false" },
+        body: JSON.stringify(notes)
+      });
+      loadNotes();
+    } catch (e) {
+      alert("Error adding comment. Check JSONBin permissions.");
+    }
+  }
+
+  window.onload = loadNotes;
+</script>
+
+ 
    <footer class="text-center border-t border-[#2D5A4C]/10 pt-8 w-full text-xs text-[#2D5A4C]/50">
       <p>Thank You - An Open Note From All Students.</p>
       <p>Built by Souvik Nandi, Wh-7699548610, souvikn522@gmail.com</p>
