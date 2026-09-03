@@ -80,218 +80,213 @@
           <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold block mb-1">Student Gallery</span>
           <h1 class="font-serif text-2xl md:text-3xl font-bold">Snapshots from the desk.</h1>
         </div>
-       
+      </div>
 
       <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <!-- Rendered photos -->
       </div>
     </section>
 
-    <footer class="text-center border-t border-[#2D5A4C]/10 pt-8 w-full text-xs text-[#2D5A4C]/60 tracking-wider">
-      <p> Thank You </p>
-    </footer>
-  </div>
-
-
-    <script>
-  // CONFIGURATION
-  const GALLERY_BIN_ID = "6a96b10ef5f4af5e295c07d4E"; // Insert Gallery Bin ID
-  const ACCESS_KEY = "$2a$10$gcOlQPwOsess/KtSM0my8.XBPGMBMrVvEV/ENcHzE42yseL.5tnFK"; // Access Key with READ + UPDATE permissions
-  const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/khgsfegs/image/upload";
-  const CLOUDINARY_PRESET = "unsigned_preset";
-
-  function toggleMobileMenu() {
-    const menu = document.getElementById('mobile-menu');
-    menu.classList.toggle('hidden');
-    menu.classList.toggle('flex');
-  }
-
-  async function loadGallery() {
-    try {
-      const res = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
-        headers: { "X-Access-Key": ACCESS_KEY }
-      });
-      const data = await res.json();
-      const photos = Array.isArray(data.record) ? data.record : [];
-      const grid = document.getElementById('gallery-grid');
-      grid.innerHTML = "";
-
-      photos.forEach((photo, index) => {
-        renderPhoto(photo, index);
-      });
-    } catch (e) {
-      console.error("Error loading gallery:", e);
-    }
-  }
-
-  function renderPhoto(photo, index) {
-    let safeUrl = "";
-    let safeCaption = "Cherished Memory";
-
-    if (typeof photo === 'string') {
-      safeUrl = photo;
-    } else if (photo && typeof photo === 'object') {
-      safeUrl = photo.url || photo.image || "";
-      if (photo.caption && photo.caption !== "undefined" && photo.caption.trim() !== "") {
-        safeCaption = photo.caption;
-      }
-    }
-
-    if (!safeUrl || safeUrl.includes("undefined")) return;
-
-    const likesCount = photo.likes || 0;
-    const commentsList = photo.comments || [];
-
-    const commentsHtml = commentsList.map(c => `
-      <div class="bg-black/5 p-2 rounded-lg my-1 text-xs break-words">
-        <span class="font-bold opacity-80">${c.user}:</span> ${c.text}
-      </div>
-    `).join('');
-
-    const grid = document.getElementById('gallery-grid');
-    const card = document.createElement('div');
-    card.className = "bg-white p-3.5 rounded-2xl shadow-md border border-[#2D5A4C]/10 transition duration-300 hover:shadow-xl break-words overflow-hidden flex flex-col justify-between";
-
-    card.innerHTML = `
-      <div>
-        <div class="overflow-hidden rounded-xl bg-neutral-100 aspect-square mb-3">
-          <img src="${safeUrl}" alt="Memory" class="w-full h-full object-cover" onerror="this.parentElement.parentElement.parentElement.remove();" />
-        </div>
-        <p class="font-serif text-sm text-[#2D5A4C] text-center italic font-medium px-1 break-words mb-3">${safeCaption}</p>
-      </div>
-
-      <div class="pt-3 border-t border-black/10">
-        <div class="flex justify-between items-center text-xs font-semibold text-[#2D5A4C]">
-          <button onclick="likePhoto(${index})" class="flex items-center space-x-1 bg-black/5 hover:bg-black/10 px-3 py-1.5 rounded-xl transition">
-            <span>❤️</span> <span>${likesCount}</span>
-          </button>
-          <button onclick="toggleGalleryCommentDrawer(${index})" class="opacity-80 hover:opacity-100">
-            💬 (${commentsList.length})
-          </button>
-        </div>
-
-        <div id="gallery-comments-drawer-${index}" class="hidden mt-3 text-left">
-          <div class="max-h-32 overflow-y-auto mb-2">${commentsHtml}</div>
-          <div class="flex gap-2">
-            <input type="text" id="gallery-comment-input-${index}" placeholder="Write a comment..." class="w-full bg-black/5 px-3 py-1.5 rounded-xl text-xs focus:outline-none" />
-            <button onclick="addGalleryComment(${index})" class="bg-[#2D5A4C] text-white text-xs px-3 py-1.5 rounded-xl font-medium">Post</button>
-          </div>
-        </div>
-      </div>
-    `;
-    grid.appendChild(card);
-  }
-
-  async function uploadPhoto(event) {
-    event.preventDefault();
-    const btn = document.getElementById('upload-btn');
-    const fileInput = document.getElementById('photo-input');
-    const captionInput = document.getElementById('caption-input');
-
-    if (!fileInput.files[0]) return alert("Please select an image first.");
-
-    btn.disabled = true;
-    btn.innerText = "UPLOADING...";
-
-    try {
-      const formData = new FormData();
-      formData.append('file', fileInput.files[0]);
-      formData.append('upload_preset', CLOUDINARY_PRESET);
-
-      const cloudRes = await fetch(CLOUDINARY_URL, { method: "POST", body: formData });
-      const cloudData = await cloudRes.json();
-
-      if (!cloudData.secure_url) throw new Error("Cloudinary Upload Failed");
-
-      const getRes = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
-        headers: { "X-Access-Key": ACCESS_KEY }
-      });
-      const getData = await getRes.json();
-      let photos = Array.isArray(getData.record) ? getData.record : [];
-
-      photos.unshift({
-        url: cloudData.secure_url,
-        caption: captionInput.value.trim() || "Cherished Memory",
-        likes: 0,
-        comments: []
-      });
-
-      await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Access-Key": ACCESS_KEY,
-          "X-Bin-Versioning": "false"
-        },
-        body: JSON.stringify(photos)
-      });
-
-      document.getElementById('upload-form').reset();
-      await loadGallery();
-    } catch (e) {
-      alert("Error uploading photo. Ensure Update permission is active on your JSONBin Access Key.");
-    }
-
-    btn.disabled = false;
-    btn.innerText = "📤 UPLOAD MEMORY";
-  }
-
-  async function likePhoto(index) {
-    try {
-      const res = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, { headers: { "X-Access-Key": ACCESS_KEY } });
-      const data = await res.json();
-      let photos = data.record;
-
-      photos[index].likes = (photos[index].likes || 0) + 1;
-
-      await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json", "X-Access-Key": ACCESS_KEY, "X-Bin-Versioning": "false" },
-        body: JSON.stringify(photos)
-      });
-      loadGallery();
-    } catch (e) {
-      alert("Error liking photo. Check JSONBin permissions.");
-    }
-  }
-
-  function toggleGalleryCommentDrawer(index) {
-    const drawer = document.getElementById(`gallery-comments-drawer-${index}`);
-    drawer.classList.toggle('hidden');
-  }
-
-  async function addGalleryComment(index) {
-    const input = document.getElementById(`gallery-comment-input-${index}`);
-    const text = input.value.trim();
-    if (!text) return;
-
-    try {
-      const res = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, { headers: { "X-Access-Key": ACCESS_KEY } });
-      const data = await res.json();
-      let photos = data.record;
-
-      if (!photos[index].comments) photos[index].comments = [];
-      photos[index].comments.push({ user: "Student", text: text });
-
-      await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json", "X-Access-Key": ACCESS_KEY, "X-Bin-Versioning": "false" },
-        body: JSON.stringify(photos)
-      });
-      loadGallery();
-    } catch (e) {
-      alert("Error adding comment. Check JSONBin permissions.");
-    }
-  }
-
-  window.onload = loadGallery;
-
-
-  </script>
-   <footer class="text-center border-t border-[#2D5A4C]/10 pt-8 w-full text-xs text-[#2D5A4C]/50">
+    <footer class="text-center border-t border-[#2D5A4C]/10 pt-8 w-full text-xs text-[#2D5A4C]/50">
       <p>Thank You - An Open Note From All Students.</p>
       <p>Built by Souvik Nandi, Wh-7699548610, souvikn522@gmail.com</p>
       <p>For more details, contact the Owner</p>
     </footer>
+  </div>
+
+  <script>
+    // CONFIGURATION
+    const GALLERY_BIN_ID = "6a96b10ef5f4af5e295c07d4"; // Verify this is your Gallery Bin ID
+    const ACCESS_KEY = "$2a$10$gcOlQPwOsess/KtSM0my8.XBPGMBMrVvEV/ENcHzE42yseL.5tnFK"; 
+    const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/khgsfegs/image/upload";
+    const CLOUDINARY_PRESET = "unsigned_preset";
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+      menu.classList.toggle('flex');
+    }
+
+    async function loadGallery() {
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
+          headers: { "X-Access-Key": ACCESS_KEY }
+        });
+        const data = await res.json();
+        const photos = Array.isArray(data.record) ? data.record : [];
+        const grid = document.getElementById('gallery-grid');
+        grid.innerHTML = "";
+
+        photos.forEach((photo, index) => {
+          renderPhoto(photo, index);
+        });
+      } catch (e) {
+        console.error("Error loading gallery:", e);
+      }
+    }
+
+    function renderPhoto(photo, index) {
+      let safeUrl = "";
+      let safeCaption = "Cherished Memory";
+
+      if (typeof photo === 'string') {
+        safeUrl = photo;
+      } else if (photo && typeof photo === 'object') {
+        safeUrl = photo.url || photo.image || "";
+        if (photo.caption && photo.caption !== "undefined" && photo.caption.trim() !== "") {
+          safeCaption = photo.caption;
+        }
+      }
+
+      if (!safeUrl || safeUrl.includes("undefined")) return;
+
+      const likesCount = photo.likes || 0;
+      const commentsList = photo.comments || [];
+
+      const commentsHtml = commentsList.map(c => `
+        <div class="bg-black/5 p-2 rounded-lg my-1 text-xs break-words">
+          <span class="font-bold opacity-80">${c.user}:</span> ${c.text}
+        </div>
+      `).join('');
+
+      const grid = document.getElementById('gallery-grid');
+      const card = document.createElement('div');
+      card.className = "bg-white p-3.5 rounded-2xl shadow-md border border-[#2D5A4C]/10 transition duration-300 hover:shadow-xl break-words overflow-hidden flex flex-col justify-between";
+
+      card.innerHTML = `
+        <div>
+          <div class="overflow-hidden rounded-xl bg-neutral-100 aspect-square mb-3">
+            <img src="${safeUrl}" alt="Memory" class="w-full h-full object-cover" onerror="this.parentElement.parentElement.parentElement.remove();" />
+          </div>
+          <p class="font-serif text-sm text-[#2D5A4C] text-center italic font-medium px-1 break-words mb-3">${safeCaption}</p>
+        </div>
+
+        <div class="pt-3 border-t border-black/10">
+          <div class="flex justify-between items-center text-xs font-semibold text-[#2D5A4C]">
+            <button onclick="likePhoto(${index})" class="flex items-center space-x-1 bg-black/5 hover:bg-black/10 px-3 py-1.5 rounded-xl transition">
+              <span>❤️</span> <span>${likesCount}</span>
+            </button>
+            <button onclick="toggleGalleryCommentDrawer(${index})" class="opacity-80 hover:opacity-100">
+              💬 (${commentsList.length})
+            </button>
+          </div>
+
+          <div id="gallery-comments-drawer-${index}" class="hidden mt-3 text-left">
+            <div class="max-h-32 overflow-y-auto mb-2">${commentsHtml}</div>
+            <div class="flex gap-2">
+              <input type="text" id="gallery-comment-input-${index}" placeholder="Write a comment..." class="w-full bg-black/5 px-3 py-1.5 rounded-xl text-xs focus:outline-none" />
+              <button onclick="addGalleryComment(${index})" class="bg-[#2D5A4C] text-white text-xs px-3 py-1.5 rounded-xl font-medium">Post</button>
+            </div>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    }
+
+    async function uploadPhoto(event) {
+      event.preventDefault();
+      const btn = document.getElementById('upload-btn');
+      const fileInput = document.getElementById('photo-file');
+      const captionInput = document.getElementById('photo-caption');
+
+      if (!fileInput.files[0]) return alert("Please select an image first.");
+
+      btn.disabled = true;
+      btn.innerText = "UPLOADING...";
+
+      try {
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        formData.append('upload_preset', CLOUDINARY_PRESET);
+
+        const cloudRes = await fetch(CLOUDINARY_URL, { method: "POST", body: formData });
+        const cloudData = await cloudRes.json();
+
+        if (!cloudData.secure_url) throw new Error("Cloudinary Upload Failed");
+
+        const getRes = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
+          headers: { "X-Access-Key": ACCESS_KEY }
+        });
+        const getData = await getRes.json();
+        let photos = Array.isArray(getData.record) ? getData.record : [];
+
+        photos.unshift({
+          url: cloudData.secure_url,
+          caption: captionInput.value.trim() || "Cherished Memory",
+          likes: 0,
+          comments: []
+        });
+
+        await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Access-Key": ACCESS_KEY,
+            "X-Bin-Versioning": "false"
+          },
+          body: JSON.stringify(photos)
+        });
+
+        document.getElementById('photo-form').reset();
+        await loadGallery();
+      } catch (e) {
+        alert("Error uploading photo. Check your Cloudinary Upload Preset name or JSONBin Access Key permissions.");
+        console.error(e);
+      }
+
+      btn.disabled = false;
+      btn.innerText = "📷 POST PHOTO";
+    }
+
+    async function likePhoto(index) {
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, { headers: { "X-Access-Key": ACCESS_KEY } });
+        const data = await res.json();
+        let photos = data.record;
+
+        photos[index].likes = (photos[index].likes || 0) + 1;
+
+        await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json", "X-Access-Key": ACCESS_KEY, "X-Bin-Versioning": "false" },
+          body: JSON.stringify(photos)
+        });
+        loadGallery();
+      } catch (e) {
+        alert("Error liking photo. Check JSONBin permissions.");
+      }
+    }
+
+    function toggleGalleryCommentDrawer(index) {
+      const drawer = document.getElementById(`gallery-comments-drawer-${index}`);
+      drawer.classList.toggle('hidden');
+    }
+
+    async function addGalleryComment(index) {
+      const input = document.getElementById(`gallery-comment-input-${index}`);
+      const text = input.value.trim();
+      if (!text) return;
+
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, { headers: { "X-Access-Key": ACCESS_KEY } });
+        const data = await res.json();
+        let photos = data.record;
+
+        if (!photos[index].comments) photos[index].comments = [];
+        photos[index].comments.push({ user: "Student", text: text });
+
+        await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json", "X-Access-Key": ACCESS_KEY, "X-Bin-Versioning": "false" },
+          body: JSON.stringify(photos)
+        });
+        loadGallery();
+      } catch (e) {
+        alert("Error adding comment. Check JSONBin permissions.");
+      }
+    }
+
+    window.onload = loadGallery;
+  </script>
 </body>
 </html>
