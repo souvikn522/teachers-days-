@@ -184,60 +184,73 @@
     }
 
     async function uploadPhoto(event) {
-      event.preventDefault();
-      const btn = document.getElementById('upload-btn');
-      const fileInput = document.getElementById('photo-file');
-      const captionInput = document.getElementById('photo-caption');
+  event.preventDefault();
+  const btn = document.getElementById('upload-btn');
+  const fileInput = document.getElementById('photo-file');
+  const captionInput = document.getElementById('photo-caption');
 
-      if (!fileInput.files[0]) return alert("Please select an image first.");
+  if (!fileInput.files[0]) return alert("Please select an image first.");
 
-      btn.disabled = true;
-      btn.innerText = "UPLOADING...";
+  btn.disabled = true;
+  btn.innerText = "UPLOADING...";
 
-      try {
-        const formData = new FormData();
-        formData.append('file', fileInput.files[0]);
-        formData.append('upload_preset', CLOUDINARY_PRESET);
+  try {
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
 
-        const cloudRes = await fetch(CLOUDINARY_URL, { method: "POST", body: formData });
-        const cloudData = await cloudRes.json();
+    const cloudRes = await fetch(CLOUDINARY_URL, { method: "POST", body: formData });
+    const cloudData = await cloudRes.json();
 
-        if (!cloudData.secure_url) throw new Error("Cloudinary Upload Failed");
-
-        const getRes = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
-          headers: { "X-Access-Key": ACCESS_KEY }
-        });
-        const getData = await getRes.json();
-        let photos = Array.isArray(getData.record) ? getData.record : [];
-
-        photos.unshift({
-          url: cloudData.secure_url,
-          caption: captionInput.value.trim() || "Cherished Memory",
-          likes: 0,
-          comments: []
-        });
-
-        await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Access-Key": ACCESS_KEY,
-            "X-Bin-Versioning": "false"
-          },
-          body: JSON.stringify(photos)
-        });
-
-        document.getElementById('photo-form').reset();
-        await loadGallery();
-      } catch (e) {
-        alert("Error uploading photo. Check your Cloudinary Upload Preset name or JSONBin Access Key permissions.");
-        console.error(e);
-      }
-
-      btn.disabled = false;
-      btn.innerText = "📷 POST PHOTO";
+    if (!cloudData.secure_url) {
+      throw new Error(`Cloudinary Error: ${cloudData.error?.message || 'Upload failed'}`);
     }
 
+    const getRes = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
+      headers: { "X-Access-Key": ACCESS_KEY }
+    });
+    
+    if (!getRes.ok) {
+      const errData = await getRes.json();
+      throw new Error(`JSONBin Fetch Error (${getRes.status}): ${errData.message}`);
+    }
+
+    const getData = await getRes.json();
+    let photos = Array.isArray(getData.record) ? getData.record : [];
+
+    photos.unshift({
+      url: cloudData.secure_url,
+      caption: captionInput.value.trim() || "Cherished Memory",
+      likes: 0,
+      comments: []
+    });
+
+    const putRes = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Access-Key": ACCESS_KEY,
+        "X-Bin-Versioning": "false"
+      },
+      body: JSON.stringify(photos)
+    });
+
+    if (!putRes.ok) {
+      const errData = await putRes.json();
+      throw new Error(`JSONBin Save Error (${putRes.status}): ${errData.message}`);
+    }
+
+    document.getElementById('photo-form').reset();
+    await loadGallery();
+    alert("Photo posted successfully!");
+  } catch (e) {
+    alert(e.message);
+    console.error(e);
+  }
+
+  btn.disabled = false;
+  btn.innerText = "📷 POST PHOTO";
+}
     async function likePhoto(index) {
       try {
         const res = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, { headers: { "X-Access-Key": ACCESS_KEY } });
