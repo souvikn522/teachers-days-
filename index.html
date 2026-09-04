@@ -12,26 +12,6 @@
     <a href="gallery.html" class="hover:text-[#D95338] transition">Gallery</a>
     <a href="wall.html" class="bg-[#D95338] text-white px-3 py-1.5 rounded-lg hover:bg-[#D95338]/90 transition">Note Wall</a>
   </nav>
-  <div class="flex items-center space-x-2 my-4">
-  <button onclick="toggleAudio()" class="text-xs uppercase tracking-wider font-semibold border border-[#2D5A4C]/20 rounded-lg px-3 py-1.5 hover:bg-[#2D5A4C] hover:text-white transition">
-    🎵 <span id="music-btn-text">Play Audio</span>
-  </button>
-  <audio id="bg-audio" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
-  </div>
-
-<script>
-  function toggleAudio() {
-    const audio = document.getElementById('bg-audio');
-    const btnText = document.getElementById('music-btn-text');
-    if (audio.paused) {
-      audio.play();
-      btnText.innerText = "Pause Audio";
-    } else {
-      audio.pause();
-      btnText.innerText = "Play Audio";
-    }
-  }
-</script>
 
 </header>
 <!DOCTYPE html>
@@ -70,7 +50,7 @@
   <div class="bg-white p-4 md:p-6 rounded-3xl shadow-xl border border-[#2D5A4C]/10 overflow-hidden">
     <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-[#2D5A4C]">
       <img 
-        src="" 
+        src="https://res.cloudinary.com/khgsfegs/image/upload/v1788515886/Photo_Album.jpg" 
         alt="Classroom Memories Collage" 
         class="w-full h-full object-contain"
       />
