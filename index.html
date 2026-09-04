@@ -64,7 +64,24 @@
       <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold mb-4 block">— A Celebration in Three Small Words —</span>
       <h1 class="font-serif text-4xl md:text-6xl font-normal leading-tight mb-6">
         For every teacher who made room for a <span class="italic text-[#D95338]">question.</span>
-      </h1>
+        </h1>
+<!-- Hero Collage Section -->
+<section class="w-full mb-12">
+  <div class="bg-white p-4 md:p-6 rounded-3xl shadow-xl border border-[#2D5A4C]/10 overflow-hidden">
+    <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-[#2D5A4C]">
+      <img 
+        src="" 
+        alt="Classroom Memories Collage" 
+        class="w-full h-full object-contain"
+      />
+    </div>
+    <div class="mt-4 text-center">
+      <h2 class="font-serif text-xl md:text-2xl font-bold text-[#2D5A4C]">Cherished Moments</h2>
+      <p class="text-xs md:text-sm text-[#2D5A4C]/70 italic mt-1">A collection of memories from all students</p>
+    </div>
+  </div>
+</section>
+      
       <p class="text-[#2D5A4C]/70 max-w-xl mx-auto text-base md:text-lg mb-8">
         Today, we pause the bell, put the pencils down, and remember the people who helped our confidence grow roots.
       </p>
@@ -94,6 +111,49 @@
       <p>For more details, contact the Owner</p>
     </footer>
   </div>
+  <script>
+  const GALLERY_BIN_ID = "6a96b10ef5f4af5e295c07d4";
+  const ACCESS_KEY = "$2a$10$gcOlQPwOsess/KtSM0my8.XBPGMBMrVvEV/ENcHzE42yseL.5tnFK";
+
+  async function loadHomeGallery() {
+    try {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${GALLERY_BIN_ID}/latest`, {
+        headers: { "X-Access-Key": ACCESS_KEY }
+      });
+      const data = await res.json();
+      const photos = Array.isArray(data.record) ? data.record : [];
+      const grid = document.getElementById('home-gallery-grid');
+      
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      // Show up to the 3 most recent photos on index page
+      const recentPhotos = photos.slice(0, 3);
+
+      recentPhotos.forEach(photo => {
+        let safeUrl = typeof photo === 'string' ? photo : (photo.url || photo.image || "");
+        let safeCaption = photo.caption || "Cherished Memory";
+
+        if (!safeUrl) return;
+
+        const card = document.createElement('div');
+        card.className = "bg-white p-3 rounded-2xl shadow-md border border-[#2D5A4C]/10 overflow-hidden flex flex-col justify-between";
+        card.innerHTML = `
+          <div class="overflow-hidden rounded-xl bg-neutral-100 aspect-square mb-3">
+            <img src="${safeUrl}" alt="Memory" class="w-full h-full object-cover" onerror="this.parentElement.parentElement.remove();" />
+          </div>
+          <p class="font-serif text-xs text-[#2D5A4C] text-center italic font-medium px-1 break-words mb-1">${safeCaption}</p>
+        `;
+        grid.appendChild(card);
+      });
+    } catch (e) {
+      console.error("Error loading home gallery preview:", e);
+    }
+  }
+
+  // Load photos when index page finishes loading
+  window.addEventListener('DOMContentLoaded', loadHomeGallery);
+</script>
 </body>
 
 </html>
