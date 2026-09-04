@@ -50,12 +50,11 @@
         <a href="wall.html" class="bg-[#D95338] text-white px-4 py-2 rounded-xl text-center">Note Wall</a>
       </nav>
     </header>
-
-   <!-- Dialogue Wall Section -->
-<section class="w-full max-w-2xl mx-auto mb-16">
-  <div class="bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-[#2D5A4C]/10">
+<!-- Dialogue Card Section -->
+<section class="w-full max-w-2xl mx-auto mb-12">
+  <div class="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-[#2D5A4C]/10">
     
-    <!-- Section Header with Single Action Button -->
+    <!-- Top Bar -->
     <div class="flex justify-between items-center mb-6 pb-4 border-b border-[#2D5A4C]/10">
       <div>
         <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold block mb-1">Famous Quotes</span>
@@ -66,13 +65,53 @@
       </button>
     </div>
 
-    <!-- Active Single Dialogue Display Container -->
-    <div id="dialogue-card" class="py-6 px-4 text-center min-h-[160px] flex flex-col items-center justify-center transition-all duration-300">
-      <!-- Dynamic content rendered here -->
+    <!-- Active Dialogue Display Area -->
+    <div id="dialogue-card" class="py-6 px-4 text-center min-h-[140px] flex flex-col items-center justify-center">
+      <!-- Quote loads here on page open -->
     </div>
 
   </div>
 </section>
+    <script>
+  // Edit or add quotes directly in this array
+  const dialogues = [
+    { text: "Get lost.", author: "Susanta Sir" },
+    { text: "Loke ki bollo, tate amar 108 bar.", author: "Susanta Sir" },
+    { text: "Don't procrastinate.", author: "Susanta Sir" }
+    {text: "Loke ki bhabhlo, tate amar  _____  _____", author: "Susanta Sir" }
+  ];
+
+  let currentIndex = 0;
+
+  function renderCurrentDialogue() {
+    const container = document.getElementById('dialogue-card');
+    if (!container || dialogues.length === 0) return;
+
+    const item = dialogues[currentIndex];
+    container.innerHTML = `
+      <span class="text-xs font-semibold uppercase tracking-widest text-[#D95338] mb-2 block">
+        Dialogue No. ${String(currentIndex + 1).padStart(2, '0')}
+      </span>
+      <p class="font-serif text-2xl md:text-3xl text-[#2D5A4C] font-semibold italic mb-3">
+        "${item.text}"
+      </p>
+      <p class="text-xs font-medium text-[#2D5A4C]/70 uppercase tracking-wider">
+        — ${item.author}
+      </p>
+    `;
+  }
+
+  function nextDialogue() {
+    if (dialogues.length === 0) return;
+    currentIndex = (currentIndex + 1) % dialogues.length;
+    renderCurrentDialogue();
+  }
+
+  // Forces the first quote to render as soon as the page finishes loading
+  window.addEventListener('DOMContentLoaded', renderCurrentDialogue);
+</script>
+
+
 
     <!-- SECTION 2: High Contrast Note Form -->
     <section class="w-full bg-[#2D5A4C] text-[#F7F4EA] rounded-3xl p-6 md:p-10 mb-16 shadow-xl">
@@ -109,48 +148,7 @@
   </div>
 
 
-    <script>
-
-      
-  // EDIT YOUR DIALOGUES HERE DIRECTLY
-  const dialogues = [
-    { text: "Get lost.", author: "Susanta Sir" },
-    { text: "Loke ki bollo, tate amar 108 bar.", author: "Susanta Sir" },
-    { text: "Don't procrastinate.", author: "Susanta Sir" },
-    { text: "Loke ki bhabhlo, tate amar  _____  _____", author: "Susanta Sir" }
-  ];
-
-  let currentIndex = 0;
-
-  function renderCurrentDialogue() {
-    const container = document.getElementById('dialogue-card');
-    if (!container || dialogues.length === 0) return;
-
-    const item = dialogues[currentIndex];
-    container.innerHTML = `
-      <span class="text-xs font-semibold uppercase tracking-widest text-[#D95338] mb-2 block">
-        Dialogue No. ${String(currentIndex + 1).padStart(2, '0')}
-      </span>
-      <p class="font-serif text-2xl md:text-3xl text-[#2D5A4C] font-semibold italic mb-3">
-        "${item.text}"
-      </p>
-      <p class="text-xs font-medium text-[#2D5A4C]/70 uppercase tracking-wider">
-        — ${item.author}
-      </p>
-    `;
-  }
-
-  function nextDialogue() {
-    if (dialogues.length === 0) return;
-    currentIndex = (currentIndex + 1) % dialogues.length;
-    renderCurrentDialogue();
-  }
-
-  window.onload = renderCurrentDialogue;
-      document.addEventListener("DOMContentLoaded", () => {
-        renderCurrentDialogue();
-      });
-<\script>
+   
   <script>
   // CONFIGURATION
   const BIN_ID = "6a96b0c9f5f4af5e295c0658"; // Notes Bin ID
