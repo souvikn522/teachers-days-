@@ -111,52 +111,44 @@
 
     <script>
 
-      let currentIndex = 0;
-let dialogues = [];
+      
+  // EDIT YOUR DIALOGUES HERE DIRECTLY
+  const dialogues = [
+    { text: "Get lost.", author: "Susanta Sir" },
+    { text: "Loke ki bollo, tate amar 108 bar.", author: "Susanta Sir" },
+    { text: "Don't procrastinate.", author: "Susanta Sir" },
+    { text: "Loke ki bhabhlo, tate amar  _____  _____", author: "Susanta Sir" }
+  ];
 
-// Fetch or load dialogues from JSONBin / Array
-async function loadDialogues() {
-  try {
-    const res = await fetch(`https://api.jsonbin.io/v3/b/${WALL_BIN_ID}/latest`, {
-      headers: { "X-Access-Key": ACCESS_KEY }
-    });
-    const data = await res.json();
-    dialogues = Array.isArray(data.record) ? data.record : [];
-    
-    if (dialogues.length > 0) {
-      renderCurrentDialogue();
-    } else {
-      document.getElementById('dialogue-card').innerHTML = `<p class="text-sm italic text-[#2D5A4C]/60">No dialogues found.</p>`;
-    }
-  } catch (e) {
-    console.error("Error loading wall dialogues:", e);
+  let currentIndex = 0;
+
+  function renderCurrentDialogue() {
+    const container = document.getElementById('dialogue-card');
+    if (!container || dialogues.length === 0) return;
+
+    const item = dialogues[currentIndex];
+    container.innerHTML = `
+      <span class="text-xs font-semibold uppercase tracking-widest text-[#D95338] mb-2 block">
+        Dialogue No. ${String(currentIndex + 1).padStart(2, '0')}
+      </span>
+      <p class="font-serif text-2xl md:text-3xl text-[#2D5A4C] font-semibold italic mb-3">
+        "${item.text}"
+      </p>
+      <p class="text-xs font-medium text-[#2D5A4C]/70 uppercase tracking-wider">
+        — ${item.author}
+      </p>
+    `;
   }
-}
 
-function renderCurrentDialogue() {
-  const container = document.getElementById('dialogue-card');
-  const item = dialogues[currentIndex];
+  function nextDialogue() {
+    if (dialogues.length === 0) return;
+    currentIndex = (currentIndex + 1) % dialogues.length;
+    renderCurrentDialogue();
+  }
 
-  container.innerHTML = `
-    <span class="text-xs font-semibold uppercase tracking-widest text-[#D95338] mb-2 block">
-      Dialogue No. ${String(currentIndex + 1).padStart(2, '0')}
-    </span>
-    <p class="font-serif text-2xl md:text-3xl text-[#2D5A4C] font-semibold italic mb-3">
-      "${item.text || item.dialogue}"
-    </p>
-    <p class="text-xs font-medium text-[#2D5A4C]/70 uppercase tracking-wider">
-      — ${item.author || "Susanta Sir"}
-    </p>
-  `;
-}
-
-function nextDialogue() {
-  if (dialogues.length === 0) return;
-  currentIndex = (currentIndex + 1) % dialogues.length;
-  renderCurrentDialogue();
-}
-
-window.onload = loadDialogues;
+  window.onload = renderCurrentDialogue;
+<\script>
+  <script>
   // CONFIGURATION
   const BIN_ID = "6a96b0c9f5f4af5e295c0658"; // Notes Bin ID
   const ACCESS_KEY = "$2a$10$4G7WH9ZfdC7pLVL5AgkXO.3DlSXttbCndEVS7LW27dM/kClSB4VOi"; // Access Key with READ + UPDATE permissions
