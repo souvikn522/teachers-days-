@@ -50,68 +50,45 @@
         <a href="wall.html" class="bg-[#D95338] text-white px-4 py-2 rounded-xl text-center">Note Wall</a>
       </nav>
     </header>
-<!-- Dialogue Card Section -->
-<section class="w-full max-w-2xl mx-auto mb-12">
-  <div class="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-[#2D5A4C]/10">
-    
-    <!-- Top Bar -->
-    <div class="flex justify-between items-center mb-6 pb-4 border-b border-[#2D5A4C]/10">
-      <div>
-        <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold block mb-1">Famous Quotes</span>
-        <h2 class="font-serif text-2xl font-bold text-[#2D5A4C]">Teacher's Words</h2>
-      </div>
-      <button onclick="nextDialogue()" class="bg-[#2D5A4C] text-[#F7F4EA] hover:bg-[#2D5A4C]/90 text-xs font-semibold uppercase tracking-wider px-4 py-2.5 rounded-xl shadow transition flex items-center gap-2">
-        <span>🔄</span> Another Dialogue
-      </button>
-    </div>
+<!-- HTML Container -->
+<section style="max-width: 600px; margin: 40px auto; padding: 20px; background: #ffffff; border-radius: 16px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2 style="margin: 0; color: #2D5A4C;">Teacher's Words</h2>
+    <button onclick="nextDialogue()" style="background: #2D5A4C; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer;">
+      🔄 Another Dialogue
+    </button>
+  </div>
 
-    <!-- Active Dialogue Display Area -->
-    <div id="dialogue-card" class="py-6 px-4 text-center min-h-[140px] flex flex-col items-center justify-center">
-      <!-- Quote loads here on page open -->
-    </div>
-
+  <div id="dialogue-card">
+    <p id="quote-text" style="font-size: 24px; font-style: italic; color: #2D5A4C; margin: 10px 0;"></p>
+    <p id="quote-author" style="font-size: 14px; color: #666; margin: 0;"></p>
   </div>
 </section>
-    <script>
-  // Edit or add quotes directly in this array
+
+<!-- Single Script Tag -->
+<script>
+  // Add your dialogues here
   const dialogues = [
     { text: "Get lost.", author: "Susanta Sir" },
     { text: "Loke ki bollo, tate amar 108 bar.", author: "Susanta Sir" },
     { text: "Don't procrastinate.", author: "Susanta Sir" }
-    {text: "Loke ki bhabhlo, tate amar  _____  _____", author: "Susanta Sir" }
   ];
 
-  let currentIndex = 0;
+  let index = 0;
 
-  function renderCurrentDialogue() {
-    const container = document.getElementById('dialogue-card');
-    if (!container || dialogues.length === 0) return;
-
-    const item = dialogues[currentIndex];
-    container.innerHTML = `
-      <span class="text-xs font-semibold uppercase tracking-widest text-[#D95338] mb-2 block">
-        Dialogue No. ${String(currentIndex + 1).padStart(2, '0')}
-      </span>
-      <p class="font-serif text-2xl md:text-3xl text-[#2D5A4C] font-semibold italic mb-3">
-        "${item.text}"
-      </p>
-      <p class="text-xs font-medium text-[#2D5A4C]/70 uppercase tracking-wider">
-        — ${item.author}
-      </p>
-    `;
+  function showDialogue() {
+    document.getElementById("quote-text").innerText = `"${dialogues[index].text}"`;
+    document.getElementById("quote-author").innerText = `— ${dialogues[index].author}`;
   }
 
   function nextDialogue() {
-    if (dialogues.length === 0) return;
-    currentIndex = (currentIndex + 1) % dialogues.length;
-    renderCurrentDialogue();
+    index = (index + 1) % dialogues.length;
+    showDialogue();
   }
 
-  // Forces the first quote to render as soon as the page finishes loading
-  window.addEventListener('DOMContentLoaded', renderCurrentDialogue);
+  // Load first dialogue automatically
+  showDialogue();
 </script>
-
-
 
     <!-- SECTION 2: High Contrast Note Form -->
     <section class="w-full bg-[#2D5A4C] text-[#F7F4EA] rounded-3xl p-6 md:p-10 mb-16 shadow-xl">
