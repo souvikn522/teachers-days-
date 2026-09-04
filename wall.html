@@ -51,63 +51,28 @@
       </nav>
     </header>
 
-    <!-- SECTION 1: Pre-written Sir Dialogues -->
-    <section class="w-full mb-12">
-      <div class="relative bg-white border border-[#2D5A4C]/10 rounded-2xl p-6 md:p-10 shadow-lg min-h-[220px] flex flex-col justify-between">
-        <div class="flex justify-between items-center text-[11px] tracking-widest text-[#2D5A4C]/50 uppercase font-semibold mb-4">
-          <span>Famous Sir Dialogues</span>
-         
-        </div>
-        <div>
-           <span id="quote-number">DIALOGUE NO. 01</span>
-          <blockquote id="quote-text" class="font-serif text-xl md:text-3xl text-[#2D5A4C] leading-snug mb-3">
-            "Get lost."
-          </blockquote>
-          <p id="quote-author" class="italic text-[#D95338] font-serif font-medium">— Susanta Sir</p>
-        </div>
-        <div class="mt-6 pt-4 border-t border-[#2D5A4C]/10 flex justify-end">
-          <button type="button" onclick="nextDialogue()" class="text-xs uppercase tracking-wider font-semibold border border-[#2D5A4C]/20 rounded-xl px-5 py-2.5 hover:bg-[#2D5A4C] hover:text-[#F7F4EA] transition shadow-sm">
-            🔄 Another Dialogue
-          </button>
-        </div>
-        <div>
-           <span id="quote-number">DIALOGUE NO. 02</span>
-          <blockquote id="quote-text" class="font-serif text-xl md:text-3xl text-[#2D5A4C] leading-snug mb-3">
-            "Loke ki bollo, tate amar 108 bar."
-          </blockquote>
-          <p id="quote-author" class="italic text-[#D95338] font-serif font-medium">— Susanta Sir</p>
-        </div>
-        <div class="mt-6 pt-4 border-t border-[#2D5A4C]/10 flex justify-end">
-          <button type="button" onclick="nextDialogue()" class="text-xs uppercase tracking-wider font-semibold border border-[#2D5A4C]/20 rounded-xl px-5 py-2.5 hover:bg-[#2D5A4C] hover:text-[#F7F4EA] transition shadow-sm">
-            🔄 Another Dialogue
-          </button>
-        </div>
-        <div>
-           <span id="quote-number">DIALOGUE NO. 03</span>
-          <blockquote id="quote-text" class="font-serif text-xl md:text-3xl text-[#2D5A4C] leading-snug mb-3">
-            "Don`t procastinate."
-          </blockquote>
-          <p id="quote-author" class="italic text-[#D95338] font-serif font-medium">— Susanta Sir</p>
-        </div>
-        <div class="mt-6 pt-4 border-t border-[#2D5A4C]/10 flex justify-end">
-          <button type="button" onclick="nextDialogue()" class="text-xs uppercase tracking-wider font-semibold border border-[#2D5A4C]/20 rounded-xl px-5 py-2.5 hover:bg-[#2D5A4C] hover:text-[#F7F4EA] transition shadow-sm">
-            🔄 Another Dialogue
-          </button>
-        </div>
-        <div>
-           <span id="quote-number">DIALOGUE NO. 04</span>
-          <blockquote id="quote-text" class="font-serif text-xl md:text-3xl text-[#2D5A4C] leading-snug mb-3">
-            "Loke ki bole jacche , tate amar  ____   ____"
-          </blockquote>
-          <p id="quote-author" class="italic text-[#D95338] font-serif font-medium">— Susanta Sir</p>
-        </div>
-        <div class="mt-6 pt-4 border-t border-[#2D5A4C]/10 flex justify-end">
-          <button type="button" onclick="nextDialogue()" class="text-xs uppercase tracking-wider font-semibold border border-[#2D5A4C]/20 rounded-xl px-5 py-2.5 hover:bg-[#2D5A4C] hover:text-[#F7F4EA] transition shadow-sm">
-            🔄 Another Dialogue
-          </button>
-        </div>
+   <!-- Dialogue Wall Section -->
+<section class="w-full max-w-2xl mx-auto mb-16">
+  <div class="bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-[#2D5A4C]/10">
+    
+    <!-- Section Header with Single Action Button -->
+    <div class="flex justify-between items-center mb-6 pb-4 border-b border-[#2D5A4C]/10">
+      <div>
+        <span class="text-xs uppercase tracking-widest text-[#D95338] font-semibold block mb-1">Famous Quotes</span>
+        <h2 class="font-serif text-2xl font-bold text-[#2D5A4C]">Teacher's Words</h2>
       </div>
-    </section>
+      <button onclick="nextDialogue()" class="bg-[#2D5A4C] text-[#F7F4EA] hover:bg-[#2D5A4C]/90 text-xs font-semibold uppercase tracking-wider px-4 py-2.5 rounded-xl shadow transition flex items-center gap-2">
+        <span>🔄</span> Another Dialogue
+      </button>
+    </div>
+
+    <!-- Active Single Dialogue Display Container -->
+    <div id="dialogue-card" class="py-6 px-4 text-center min-h-[160px] flex flex-col items-center justify-center transition-all duration-300">
+      <!-- Dynamic content rendered here -->
+    </div>
+
+  </div>
+</section>
 
     <!-- SECTION 2: High Contrast Note Form -->
     <section class="w-full bg-[#2D5A4C] text-[#F7F4EA] rounded-3xl p-6 md:p-10 mb-16 shadow-xl">
@@ -145,6 +110,53 @@
 
 
     <script>
+
+      let currentIndex = 0;
+let dialogues = [];
+
+// Fetch or load dialogues from JSONBin / Array
+async function loadDialogues() {
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${WALL_BIN_ID}/latest`, {
+      headers: { "X-Access-Key": ACCESS_KEY }
+    });
+    const data = await res.json();
+    dialogues = Array.isArray(data.record) ? data.record : [];
+    
+    if (dialogues.length > 0) {
+      renderCurrentDialogue();
+    } else {
+      document.getElementById('dialogue-card').innerHTML = `<p class="text-sm italic text-[#2D5A4C]/60">No dialogues found.</p>`;
+    }
+  } catch (e) {
+    console.error("Error loading wall dialogues:", e);
+  }
+}
+
+function renderCurrentDialogue() {
+  const container = document.getElementById('dialogue-card');
+  const item = dialogues[currentIndex];
+
+  container.innerHTML = `
+    <span class="text-xs font-semibold uppercase tracking-widest text-[#D95338] mb-2 block">
+      Dialogue No. ${String(currentIndex + 1).padStart(2, '0')}
+    </span>
+    <p class="font-serif text-2xl md:text-3xl text-[#2D5A4C] font-semibold italic mb-3">
+      "${item.text || item.dialogue}"
+    </p>
+    <p class="text-xs font-medium text-[#2D5A4C]/70 uppercase tracking-wider">
+      — ${item.author || "Susanta Sir"}
+    </p>
+  `;
+}
+
+function nextDialogue() {
+  if (dialogues.length === 0) return;
+  currentIndex = (currentIndex + 1) % dialogues.length;
+  renderCurrentDialogue();
+}
+
+window.onload = loadDialogues;
   // CONFIGURATION
   const BIN_ID = "6a96b0c9f5f4af5e295c0658"; // Notes Bin ID
   const ACCESS_KEY = "$2a$10$4G7WH9ZfdC7pLVL5AgkXO.3DlSXttbCndEVS7LW27dM/kClSB4VOi"; // Access Key with READ + UPDATE permissions
